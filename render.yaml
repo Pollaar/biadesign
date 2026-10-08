@@ -1,0 +1,25 @@
+# Configuração para o Render (Blueprint). No Render: New › Blueprint › escolha este repositório.
+services:
+  - type: web
+    name: agenda-cilios
+    runtime: node
+    plan: free
+    region: virginia
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: ADMIN_KEY
+        sync: false        # senha do painel: o Render pede na criação
+      - key: OWNER_PHONE
+        sync: false        # WhatsApp da dona, com DDD (ex.: 21999999999)
+      - key: UPSTASH_REDIS_REST_URL
+        sync: false        # copie do painel do Upstash
+      - key: UPSTASH_REDIS_REST_TOKEN
+        sync: false        # copie do painel do Upstash
+      - key: VAPID_SUBJECT
+        sync: false        # mailto:seu-email@exemplo.com (a Apple exige)
+      - key: MAX_WEEKS_AHEAD
+        value: "26"

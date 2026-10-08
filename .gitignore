@@ -1,0 +1,5 @@
+node_modules/
+.env
+# dados locais: telefones de clientes e a chave privada das notificações não vão para o GitHub
+data/
+*.tmp

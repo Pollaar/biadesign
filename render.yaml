@@ -1,7 +1,7 @@
 # Configuração para o Render (Blueprint). No Render: New › Blueprint › escolha este repositório.
 services:
   - type: web
-    name: studio.beatrizlimaasadasdad
+    name: studio.beatrizlima
     runtime: node
     plan: free
     region: virginia

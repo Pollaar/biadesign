@@ -1,0 +1,1107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Beatriz Lima · Lash Designer. Extensão de cílios e design de sobrancelhas. Veja o catálogo, os valores e agende seu horário online.">
+<title>Beatriz Lima · Lash Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #ffffff;
+    --blush: #fff6f9;
+    --pink-50: #fdeef3;
+    --pink-100: #fbdde8;
+    --pink-200: #f7c3d6;
+    --pink-400: #ea7fa6;
+    --pink-500: #e0588a;
+    --pink-600: #c83f72;
+    --pink-700: #a52f5c;
+    --ink: #1d1d1f;
+    --ink-2: #424245;
+    --muted: #6e6e73;
+    --faint: #b8b0b4;
+    --line: #f1e4ea;
+    --ok: #2f8a5f;
+    --ok-soft: #e4f4ec;
+    --err: #c0262d;
+    --wa: #1fa855;
+    --serif: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+    --sans: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    --ease: cubic-bezier(.16, 1, .3, 1);
+    --r-lg: 28px;
+    --r-md: 18px;
+    --shadow: 0 2px 6px rgba(200, 63, 114, .05), 0 18px 48px rgba(200, 63, 114, .09);
+    --nav-h: 56px;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--nav-h) + 12px); }
+  body {
+    margin: 0; background: var(--white); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.5; letter-spacing: -.01em;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+  button { font: inherit; color: inherit; }
+  a { color: inherit; }
+  [hidden] { display: none !important; }
+  .container { width: 100%; max-width: 1080px; margin: 0 auto; padding-inline: 22px; }
+  .eyebrow { font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--pink-600); margin: 0 0 14px; }
+  .h2 { font-size: clamp(2.1rem, 6vw, 3.6rem); line-height: 1.05; letter-spacing: -.035em; font-weight: 700; margin: 0; }
+  .h2 em { font-family: var(--serif); font-style: italic; font-weight: 500; letter-spacing: -.02em; color: var(--pink-600); }
+  .sub { font-size: clamp(1.05rem, 2.4vw, 1.3rem); color: var(--muted); margin: 14px 0 0; line-height: 1.45; }
+  section { position: relative; }
+  .sect { padding-block: clamp(80px, 14vw, 150px); }
+  .sect-head { text-align: center; max-width: 720px; margin: 0 auto clamp(40px, 7vw, 64px); }
+
+  /* ---------- Botões ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    border: 0; border-radius: 999px; padding: 14px 26px; font-weight: 600; font-size: 1rem; cursor: pointer;
+    text-decoration: none; transition: transform .35s var(--ease), background .25s, box-shadow .35s var(--ease), opacity .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active:not(:disabled) { transform: scale(.97); }
+  .btn-primary { background: var(--pink-500); color: #fff; box-shadow: 0 8px 22px rgba(224, 88, 138, .32); }
+  .btn-primary:hover:not(:disabled) { background: var(--pink-600); transform: translateY(-1px); box-shadow: 0 12px 28px rgba(224, 88, 138, .38); }
+  .btn-primary:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+  .btn-ghost { background: transparent; color: var(--pink-600); padding-inline: 14px; }
+  .btn-ghost:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .btn-soft { background: var(--pink-50); color: var(--pink-700); }
+  .btn-soft:hover { background: var(--pink-100); }
+  .btn-line { background: #fff; color: var(--ink); border: 1.5px solid var(--line); }
+  .btn-line:hover { border-color: var(--pink-400); }
+
+  /* ---------- Barra de navegação ---------- */
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    padding-top: env(safe-area-inset-top, 0px);
+    transition: background .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .nav.scrolled { background: rgba(255, 255, 255, .78); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); box-shadow: 0 1px 0 rgba(0, 0, 0, .06); }
+  .nav .in { height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand .bm {
+    width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--pink-400), var(--pink-600)); color: #fff;
+    font-family: var(--serif); font-weight: 700; font-size: 1.05rem;
+  }
+  .brand span:last-child { font-family: var(--serif); font-size: 1.02rem; letter-spacing: .06em; text-transform: uppercase; }
+  .links { display: flex; align-items: center; gap: 26px; font-size: .88rem; }
+  .links a { text-decoration: none; color: var(--ink-2); transition: color .2s; }
+  .links a:hover { color: var(--pink-600); }
+  .links .btn { padding: 8px 16px; font-size: .85rem; color: #fff; box-shadow: none; }
+  @media (max-width: 720px) { .links a:not(.btn) { display: none; } }
+
+  /* ---------- Hero ---------- */
+  .hero { padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + clamp(48px, 10vw, 96px)); text-align: center; overflow: hidden; }
+  .glow { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: -1; }
+  .glow i {
+    position: absolute; border-radius: 50%; filter: blur(70px); opacity: .75;
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  .glow i:nth-child(1) { width: 52vw; height: 52vw; max-width: 640px; max-height: 640px; left: 50%; top: -10%; margin-left: -26vw; background: radial-gradient(circle, #fbcfe0 0%, rgba(251, 207, 224, 0) 70%); }
+  .glow i:nth-child(2) { width: 36vw; height: 36vw; max-width: 460px; max-height: 460px; left: -6%; top: 20%; background: radial-gradient(circle, #fde3ec 0%, rgba(253, 227, 236, 0) 70%); animation-duration: 22s; }
+  .glow i:nth-child(3) { width: 34vw; height: 34vw; max-width: 420px; max-height: 420px; right: -6%; top: 6%; background: radial-gradient(circle, #f8c6d9 0%, rgba(248, 198, 217, 0) 70%); animation-duration: 26s; }
+  @keyframes drift { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(3%, 6%, 0) scale(1.08); } }
+
+  .logo { margin: 0; display: flex; align-items: center; justify-content: center; gap: clamp(8px, 2vw, 18px); font-family: var(--serif); font-weight: 500; color: var(--ink); line-height: 1; }
+  .logo .w { font-size: clamp(1.6rem, 6vw, 3.4rem); letter-spacing: .06em; }
+  .logo .B {
+    font-size: clamp(5.5rem, 22vw, 12rem); font-weight: 700; line-height: .82;
+    background: linear-gradient(160deg, var(--pink-400) 0%, var(--pink-600) 55%, var(--pink-700) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .role { font-family: var(--serif); letter-spacing: .42em; text-transform: uppercase; font-size: clamp(.8rem, 2.4vw, 1.05rem); color: var(--pink-600); margin: 18px 0 0; padding-left: .42em; }
+  .hero .sub { max-width: 560px; margin-inline: auto; margin-top: 26px; }
+  .hero .cta { margin-top: 30px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .spark { position: absolute; color: var(--pink-200); pointer-events: none; animation: twinkle 4s ease-in-out infinite; }
+  .spark svg { width: 100%; height: 100%; display: block; }
+  @keyframes twinkle { 0%, 100% { opacity: .35; transform: scale(.85) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(12deg); } }
+
+
+  /* ---------- Frase que acende ---------- */
+  .statement { height: 240vh; }
+  .statement .stick { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; }
+  .statement p {
+    margin: 0; max-width: 900px; padding-inline: 22px; text-align: center;
+    font-size: clamp(2rem, 6.4vw, 4.4rem); line-height: 1.12; letter-spacing: -.035em; font-weight: 700;
+  }
+  .statement .word { color: var(--pink-200); transition: color .5s var(--ease); }
+  .statement .word.on { color: var(--ink); }
+  .statement .word.accent.on { color: var(--pink-600); font-family: var(--serif); font-style: italic; font-weight: 500; }
+
+  /* ---------- Sobre ---------- */
+  .about { background: var(--blush); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  /* antes e depois */
+  .ba-wrap { margin: 0; }
+  .ba {
+    position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow);
+    background: var(--pink-50); user-select: none; -webkit-user-select: none; touch-action: pan-y;
+  }
+  .ba-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; pointer-events: none; }
+  .ba-before { position: absolute; inset: 0; overflow: hidden; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  /* alinha os rostos das duas fotos (o "antes" foi tirado mais de longe) */
+  #baBefore { object-position: 50% 50%; transform: scale(1.32); transform-origin: 58% 50%; }
+  #baAfter { object-position: 50% 42%; }
+  .ba-line {
+    position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; margin-left: -1px; background: #fff;
+    box-shadow: 0 0 12px rgba(0, 0, 0, .25); pointer-events: none;
+  }
+  .ba-knob {
+    position: absolute; top: 50%; left: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%;
+    display: grid; place-items: center; color: var(--pink-600);
+    background: rgba(255, 255, 255, .9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .18); transition: transform .4s var(--ease);
+  }
+  .ba-knob svg { width: 20px; height: 20px; }
+  .ba:hover .ba-knob, .ba.dragging .ba-knob { transform: scale(1.08); }
+  .ba-tag {
+    position: absolute; top: 16px; padding: 6px 12px; border-radius: 999px; font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    background: rgba(255, 255, 255, .82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--ink-2);
+    transition: opacity .4s var(--ease); pointer-events: none;
+  }
+  .ba-tag.l { left: 16px; }
+  .ba-tag.r { right: 16px; color: var(--pink-700); }
+  .ba-range { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; -webkit-appearance: none; appearance: none; }
+  .ba-range:focus-visible + .ba-line, .ba:has(.ba-range:focus-visible) .ba-knob { outline: 3px solid var(--pink-400); outline-offset: 2px; }
+  .ba-wrap figcaption { text-align: center; font-size: .82rem; color: var(--muted); margin-top: 12px; }
+
+  /* faixa de trabalhos */
+  .showcase { margin-top: clamp(56px, 10vw, 96px); }
+  .showcase-title { font-size: .78rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0 0 18px; }
+  .marquee { position: relative; overflow: hidden; padding-block: 6px 30px; contain: layout paint; }
+  /* degradê fixo nas bordas (mais leve que mask-image, que repinta a cada quadro) */
+  .marquee::before, .marquee::after { content: ""; position: absolute; top: 0; bottom: 0; width: 8%; z-index: 1; pointer-events: none; }
+  .marquee::before { left: 0; background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0)); }
+  .marquee::after { right: 0; background: linear-gradient(270deg, #fff, rgba(255, 255, 255, 0)); }
+  .track {
+    display: flex; gap: 16px; width: max-content; will-change: transform; backface-visibility: hidden;
+    animation: marquee var(--dur, 60s) linear infinite; animation-play-state: paused;
+  }
+  .marquee.run .track { animation-play-state: running; }
+  .marquee.run:hover .track { animation-play-state: paused; }
+  @keyframes marquee { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(calc(-50% - 8px), 0, 0); } }
+  .tile {
+    flex: none; width: clamp(170px, 22vw, 240px); text-decoration: none; color: inherit; display: block;
+    transition: transform .6s var(--ease);
+  }
+  .tile:hover { transform: translateY(-6px); }
+  .tile .ph { aspect-ratio: 3 / 4; border-radius: 22px; overflow: hidden; background: var(--pink-50); box-shadow: 0 8px 22px rgba(200, 63, 114, .08); }
+  .tile img { width: 100%; height: 100%; object-fit: cover; }
+  .tile span { display: block; margin-top: 10px; font-size: .88rem; font-weight: 600; text-align: left; padding-left: 4px; }
+  .tile small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; }
+  .about-text p:not(.eyebrow) { color: var(--ink-2); font-size: 1.08rem; margin: 22px 0 0; }
+  .sign { font-family: var(--serif); font-style: italic; font-size: 1.6rem; color: var(--pink-600); margin-top: 22px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: .85rem; text-decoration: none; color: var(--ink-2); }
+  a.chip:hover { border-color: var(--pink-400); color: var(--pink-600); }
+  @media (max-width: 760px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .ba-wrap { max-width: 460px; width: 100%; margin-inline: auto; }
+  }
+
+  /* ---------- Catálogo ---------- */
+  .seg { display: inline-flex; background: #f3eef1; border-radius: 999px; padding: 4px; gap: 2px; margin-top: 28px; }
+  .seg button {
+    border: 0; background: transparent; padding: 9px 18px; border-radius: 999px; cursor: pointer; font-size: .9rem; font-weight: 500; color: var(--ink-2);
+    transition: background .35s var(--ease), color .2s, box-shadow .35s var(--ease);
+  }
+  .seg button[aria-pressed="true"] { background: #fff; color: var(--ink); box-shadow: 0 2px 8px rgba(0, 0, 0, .08); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 22px; }
+  .cell { display: flex; }
+  .cell.hide { display: none; }
+  .card {
+    background: #fff; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line);
+    display: flex; flex-direction: column; width: 100%;
+    transition: transform .6s var(--ease), box-shadow .6s var(--ease);
+  }
+  .card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+  .media { position: relative; aspect-ratio: 4 / 5; background: var(--pink-50); overflow: hidden; }
+  .slides { position: absolute; inset: 0; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .slides::-webkit-scrollbar { display: none; }
+  .slides button { flex: 0 0 100%; height: 100%; scroll-snap-align: center; border: 0; padding: 0; cursor: zoom-in; background: none; overflow: hidden; }
+  .slides img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .card:hover .slides img { transform: scale(1.04); }
+  .dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px; pointer-events: none; }
+  .dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .6); transition: width .4s var(--ease), background .3s; }
+  .dots i.on { width: 18px; background: #fff; }
+  .tag { position: absolute; top: 14px; left: 14px; padding: 5px 11px; border-radius: 999px; font-size: .72rem; font-weight: 600; letter-spacing: .04em; background: rgba(255, 255, 255, .85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--pink-700); }
+  .card .body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
+  .card h3 { margin: 0; font-size: 1.35rem; letter-spacing: -.02em; }
+  .card .desc { color: var(--muted); margin: 6px 0 18px; font-size: .98rem; flex: 1; }
+  .prices { display: flex; gap: 10px; margin-bottom: 18px; }
+  .price { flex: 1; background: var(--blush); border-radius: 14px; padding: 10px 12px; }
+  .price small { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .price b { font-size: 1.2rem; letter-spacing: -.02em; }
+  .card .btn { width: 100%; }
+
+  /* ---------- Tabela de valores ---------- */
+  .values { background: var(--blush); }
+  .table { background: #fff; border-radius: var(--r-lg); border: 1px solid var(--line); overflow: hidden; max-width: 820px; margin: 0 auto; }
+  .row { display: grid; grid-template-columns: 1fr 110px 110px; gap: 12px; align-items: center; padding: 16px 24px; border-top: 1px solid var(--line); }
+  .row:first-child { border-top: 0; }
+  .row.head { background: #fffafc; font-size: .74rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; padding-block: 12px; }
+  .row .n { font-weight: 600; }
+  .row .n small { display: block; font-weight: 400; color: var(--muted); font-size: .82rem; }
+  .row .v { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .row .v.none { color: var(--faint); font-weight: 400; }
+  .row.group { background: var(--pink-50); font-family: var(--serif); font-size: 1.05rem; color: var(--pink-700); padding-block: 10px; grid-template-columns: 1fr; }
+  @media (max-width: 520px) {
+    .row { grid-template-columns: 1fr 76px 76px; padding-inline: 16px; font-size: .92rem; }
+  }
+
+  /* ---------- Agendamento ---------- */
+  .book-card { max-width: 760px; margin: 0 auto; background: #fff; border-radius: var(--r-lg); border: 1px solid var(--line); box-shadow: var(--shadow); overflow: hidden; }
+  .step { padding: clamp(22px, 4vw, 32px); border-top: 1px solid var(--line); }
+  .step:first-child { border-top: 0; }
+  .stephead { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .num { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: .85rem; font-weight: 700; background: var(--pink-50); color: var(--pink-700); transition: background .4s var(--ease), color .4s; }
+  .step.done .num { background: var(--pink-500); color: #fff; }
+  .stephead h3 { margin: 0; font-size: 1.12rem; letter-spacing: -.01em; flex: 1; }
+  .stephead .pick { font-size: .88rem; color: var(--pink-600); font-weight: 500; }
+  .empty-hint { color: var(--muted); font-size: .95rem; margin: 0; grid-column: 1 / -1; }
+
+  .svcs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 10px; }
+  @media (max-width: 560px) {
+    .svcs { grid-template-columns: 1fr 1fr; }
+    .opt > span { flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px; }
+  }
+  .opt { position: relative; }
+  .opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .opt > span {
+    display: flex; align-items: center; gap: 12px; height: 100%;
+    border: 1.5px solid var(--line); border-radius: 16px; padding: 10px 14px 10px 10px; cursor: pointer; background: #fff;
+    transition: border-color .25s, background .25s, transform .3s var(--ease);
+  }
+  .opt > span:hover { border-color: var(--pink-200); }
+  .opt input:checked + span { border-color: var(--pink-500); background: var(--blush); }
+  .opt input:focus-visible + span { outline: 2px solid var(--pink-500); outline-offset: 2px; }
+  .opt img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; flex: none; }
+  .opt span span { display: block; min-width: 0; }
+  .opt b { display: block; font-size: .95rem; line-height: 1.2; }
+  .opt small { color: var(--muted); font-size: .8rem; }
+  .subq { margin-top: 20px; }
+  .subq > p { margin: 0 0 10px; font-size: .85rem; color: var(--muted); font-weight: 500; }
+  .seg.wide { display: flex; margin: 0; }
+  .seg.wide button { flex: 1; padding: 11px 10px; }
+  .seg.wide button small { display: block; font-size: .78rem; color: var(--muted); font-weight: 400; }
+  .extras { display: grid; gap: 8px; }
+  .check { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 14px; cursor: pointer; transition: border-color .25s, background .25s; }
+  .check:hover { border-color: var(--pink-200); }
+  .check input { width: 20px; height: 20px; accent-color: var(--pink-500); margin: 0; flex: none; }
+  .check:has(input:checked) { border-color: var(--pink-500); background: var(--blush); }
+  .check span { flex: 1; font-size: .95rem; }
+  .check em { font-style: normal; font-weight: 600; color: var(--pink-700); font-size: .92rem; }
+
+  .weeknav { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .weeknav .label { flex: 1; text-align: center; font-size: .92rem; color: var(--muted); }
+  .navbtn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: #fff; cursor: pointer; font-size: 1.15rem; line-height: 1; transition: border-color .2s; }
+  .navbtn:hover:not(:disabled) { border-color: var(--pink-400); color: var(--pink-600); }
+  .navbtn:disabled { opacity: .3; cursor: not-allowed; }
+  .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; }
+  .day, .time {
+    border: 1.5px solid var(--line); background: #fff; cursor: pointer; text-align: center;
+    transition: border-color .2s, background .3s var(--ease), color .2s, transform .3s var(--ease);
+  }
+  .day { border-radius: 18px; padding: 10px 6px 9px; }
+  .day:active:not(:disabled), .time:active:not(:disabled) { transform: scale(.95); }
+  .day:hover:not(:disabled), .time:hover:not(:disabled) { border-color: var(--pink-400); }
+  .day .wd { display: block; font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+  .day .dn { display: block; font-size: 1.6rem; font-weight: 700; letter-spacing: -.03em; line-height: 1.2; }
+  .day .st { display: block; font-size: .7rem; color: var(--ok); }
+  .day.selected, .time.selected { background: var(--pink-500); border-color: var(--pink-500); color: #fff; }
+  .day.selected .wd, .day.selected .st, .time.selected small { color: rgba(255, 255, 255, .88); }
+  .day:disabled, .time:disabled { background: #faf7f8; cursor: not-allowed; color: var(--faint); }
+  .day:disabled .wd, .day:disabled .st, .time:disabled small { color: var(--faint); }
+  .times { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+  .time { border-radius: 14px; padding: 10px 6px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .time small { display: block; font-size: .7rem; font-weight: 400; color: var(--ok); }
+
+  .fields { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 560px) { .fields { grid-template-columns: 1fr; } }
+  .field { display: grid; gap: 6px; font-size: .82rem; color: var(--muted); font-weight: 500; }
+  .field input {
+    font: inherit; font-size: 1rem; padding: 14px 16px; border: 1.5px solid var(--line); border-radius: 14px; color: var(--ink); background: #fff; width: 100%;
+    transition: border-color .2s, box-shadow .3s var(--ease);
+  }
+  .field input:focus { outline: none; border-color: var(--pink-500); box-shadow: 0 0 0 4px var(--pink-50); }
+  .msg { margin: 0; padding: 0 clamp(22px, 4vw, 32px) 22px; color: var(--err); font-size: .92rem; }
+  .msg:empty { display: none; }
+  .closed { text-align: center; padding: 48px 24px; }
+  .closed .big { font-size: 2.4rem; }
+  .closed h3 { font-size: 1.5rem; margin: 10px 0 6px; letter-spacing: -.02em; }
+  .closed p { color: var(--muted); margin: 0; }
+
+  /* ---------- Pedido enviado ---------- */
+  .sent { padding: clamp(32px, 6vw, 48px) clamp(22px, 5vw, 44px); text-align: center; }
+  .sent .burst { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 14px; display: grid; place-items: center; background: var(--ok-soft); color: var(--ok); font-size: 2rem; animation: pop .8s var(--ease) both; }
+  @keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .sent h3 { font-size: clamp(1.8rem, 5vw, 2.4rem); letter-spacing: -.03em; margin: 0; }
+  .sent .lead { color: var(--muted); margin: 8px 0 26px; }
+  .timeline { list-style: none; padding: 0; margin: 0 auto 24px; text-align: left; max-width: 440px; }
+  .timeline li { display: flex; gap: 14px; position: relative; padding-bottom: 20px; }
+  .timeline li:last-child { padding-bottom: 0; }
+  .timeline li::before { content: ""; position: absolute; left: 14px; top: 32px; bottom: 2px; width: 2px; background: var(--line); }
+  .timeline li:last-child::before { display: none; }
+  .timeline .dot { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: .82rem; font-weight: 700; background: var(--pink-50); color: var(--pink-700); }
+  .timeline .ok .dot { background: var(--ok); color: #fff; }
+  .timeline b { display: block; }
+  .timeline span { font-size: .9rem; color: var(--muted); }
+  .wa { display: flex; align-items: center; justify-content: center; gap: 10px; max-width: 440px; margin: 0 auto; background: var(--wa); color: #fff; text-decoration: none; border-radius: 999px; padding: 16px; font-weight: 600; transition: transform .35s var(--ease), filter .2s; }
+  .wa:hover { filter: brightness(.95); transform: translateY(-1px); }
+  .wa svg { width: 20px; height: 20px; }
+  .sent .again { margin-top: 12px; }
+
+  /* ---------- Barra de resumo ---------- */
+  .bar {
+    position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 40;
+    max-width: 760px; margin: 0 auto;
+    background: rgba(255, 255, 255, .86); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 12px 40px rgba(0, 0, 0, .12);
+    padding: 10px 10px 10px 18px; display: flex; align-items: center; gap: 12px;
+    transform: translateY(140%); transition: transform .6s var(--ease);
+  }
+  .bar.show { transform: none; }
+  .bar .sum { flex: 1; min-width: 0; font-size: .82rem; color: var(--muted); line-height: 1.3; }
+  .bar .sum b { display: block; color: var(--ink); font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar .total { font-weight: 700; color: var(--pink-700); }
+  .bar .btn { padding: 13px 20px; white-space: nowrap; }
+
+  /* ---------- Rodapé ---------- */
+  footer { padding: 56px 0 calc(110px + env(safe-area-inset-bottom, 0px)); text-align: center; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); }
+  footer .fl { font-family: var(--serif); font-size: 1.3rem; color: var(--ink); letter-spacing: .08em; text-transform: uppercase; }
+  footer .fr { font-family: var(--serif); letter-spacing: .3em; text-transform: uppercase; color: var(--pink-600); font-size: .75rem; margin: 4px 0 16px; }
+
+  /* ---------- Janelas ---------- */
+  dialog { border: 0; padding: 0; color: var(--ink); background: transparent; max-width: none; max-height: none; }
+  dialog::backdrop { background: rgba(29, 29, 31, .5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  dialog[open] .sheet { animation: rise .55s var(--ease) both; }
+  @keyframes rise { from { transform: translateY(24px) scale(.98); opacity: 0; } to { transform: none; opacity: 1; } }
+  .sheet { background: #fff; border-radius: 26px; padding: 26px; width: min(420px, calc(100vw - 32px)); box-shadow: 0 30px 80px rgba(0, 0, 0, .25); }
+  .sheet h3 { font-size: 1.5rem; letter-spacing: -.02em; margin: 0 0 16px; }
+  .recap { background: var(--blush); border-radius: 16px; padding: 14px 16px; margin: 0; display: grid; gap: 9px; }
+  .recap div { display: flex; justify-content: space-between; gap: 14px; font-size: .92rem; }
+  .recap dt { color: var(--muted); flex: none; }
+  .recap dd { margin: 0; font-weight: 600; text-align: right; }
+  .recap .tot { border-top: 1px solid var(--pink-100); padding-top: 9px; }
+  .recap .tot dd { color: var(--pink-700); font-size: 1.05rem; }
+  .note { font-size: .85rem; color: var(--muted); margin: 14px 0 0; }
+  .sheet .actions { display: grid; grid-template-columns: 1fr 1.5fr; gap: 10px; margin-top: 20px; }
+  .lightbox .lb { position: relative; }
+  .lightbox img { max-width: min(92vw, 1000px); max-height: 86vh; border-radius: 20px; box-shadow: 0 30px 80px rgba(0, 0, 0, .35); }
+  .lightbox[open] img { animation: rise .55s var(--ease) both; }
+  .lb-close { position: absolute; top: 10px; right: 10px; width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); cursor: pointer; font-size: 1.1rem; }
+
+  /* ---------- Aparecer ao rolar ---------- */
+  .reveal { opacity: 0; transform: translateY(36px); transition: opacity 1.1s var(--ease), transform 1.1s var(--ease); transition-delay: var(--d, 0s); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+    .reveal { opacity: 1; transform: none; }
+    .statement { height: auto; }
+    .statement .stick { position: static; height: auto; padding-block: 100px; }
+    .statement .word { color: var(--ink); }
+    .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="container in">
+    <a class="brand" href="#top" aria-label="Início"><span class="bm">B</span><span id="navName">Beatriz Lima</span></a>
+    <div class="links">
+      <a href="#sobre">Sobre</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#valores">Valores</a>
+      <a class="btn btn-primary" href="#agendar">Agendar</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="glow" aria-hidden="true"><i></i><i></i><i></i></div>
+  <span class="spark" style="width:34px;height:34px;left:12%;top:24%" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0Z"/></svg></span>
+  <span class="spark" style="width:22px;height:22px;left:18%;top:34%;animation-delay:1.2s" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0Z"/></svg></span>
+  <span class="spark" style="width:30px;height:30px;right:13%;top:20%;animation-delay:.6s" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0Z"/></svg></span>
+  <span class="spark" style="width:18px;height:18px;right:19%;top:31%;animation-delay:2s" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0Z"/></svg></span>
+
+  <div class="container">
+    <h1 class="logo reveal" aria-label="Beatriz Lima">
+      <span class="w" id="nameA">BEATRIZ</span><span class="B" aria-hidden="true">B</span><span class="w" id="nameB">LIMA</span>
+    </h1>
+    <p class="role reveal" style="--d:.12s" id="role">Lash Designer</p>
+    <p class="sub reveal" style="--d:.24s" id="tagline">Realçando a beleza natural do seu olhar.</p>
+    <div class="cta reveal" style="--d:.36s">
+      <a class="btn btn-primary" href="#agendar">Agendar horário</a>
+      <a class="btn btn-ghost" href="#catalogo">Ver catálogo ›</a>
+    </div>
+  </div>
+  <div class="showcase reveal" style="--d:.5s">
+    <p class="showcase-title">Trabalhos reais</p>
+    <div class="marquee" id="marquee"><div class="track" id="track"></div></div>
+  </div>
+</header>
+
+<section class="statement" id="statement" aria-label="Nosso jeito de atender">
+  <div class="stick">
+    <p id="statementText">Carinho em cada fio. Atenção a cada detalhe. Um olhar que é a sua cara.</p>
+  </div>
+</section>
+
+<section class="about sect" id="sobre">
+  <div class="container about-grid">
+    <figure class="ba-wrap reveal">
+      <div class="ba" id="ba" style="--pos:50%">
+        <img class="ba-img" id="baAfter" src="img/beatriz-1.jpg" alt="Depois: com extensão de cílios" loading="lazy" draggable="false">
+        <div class="ba-before"><img class="ba-img" id="baBefore" src="img/beatriz-2.jpg" alt="Antes: sem extensão de cílios" loading="lazy" draggable="false"></div>
+        <span class="ba-tag l">Antes</span>
+        <span class="ba-tag r">Depois</span>
+        <div class="ba-line" aria-hidden="true"><span class="ba-knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></span></div>
+        <input class="ba-range" id="baRange" type="range" min="0" max="100" value="50" step="0.1" aria-label="Comparar antes e depois">
+      </div>
+      <figcaption>Arraste para comparar</figcaption>
+    </figure>
+    <div class="about-text">
+      <p class="eyebrow reveal">Bem-vinda</p>
+      <h2 class="h2 reveal" style="--d:.08s">Oi, eu sou a <em id="firstName">Beatriz</em>.</h2>
+      <p class="reveal" style="--d:.16s" id="aboutText"></p>
+      <div class="sign reveal" style="--d:.24s" id="sign"></div>
+      <div class="chips reveal" style="--d:.3s" id="chips"></div>
+    </div>
+  </div>
+</section>
+
+<section class="sect" id="catalogo">
+  <div class="container">
+    <div class="sect-head">
+      <p class="eyebrow reveal">Catálogo</p>
+      <h2 class="h2 reveal" style="--d:.08s">Escolha o <em>seu</em> olhar.</h2>
+      <p class="sub reveal" style="--d:.16s">Toque nas fotos para ampliar. Arraste para ver mais.</p>
+      <div class="seg reveal" style="--d:.24s" id="filters" role="group" aria-label="Filtrar catálogo"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section class="values sect" id="valores">
+  <div class="container">
+    <div class="sect-head">
+      <p class="eyebrow reveal">Valores</p>
+      <h2 class="h2 reveal" style="--d:.08s">Transparente, <em>do jeito certo</em>.</h2>
+      <p class="sub reveal" style="--d:.16s">Manutenção é o retoque que mantém seus cílios sempre lindos.</p>
+    </div>
+    <div class="table reveal" id="table"></div>
+  </div>
+</section>
+
+<section class="sect" id="agendar">
+  <div class="container">
+    <div class="sect-head">
+      <p class="eyebrow reveal">Agendamento</p>
+      <h2 class="h2 reveal" style="--d:.08s">Agende seu <em>horário</em>.</h2>
+      <p class="sub reveal" style="--d:.16s">Escolha o serviço, o dia e o horário. A confirmação vem pelo WhatsApp.</p>
+    </div>
+
+    <div class="book-card reveal" style="--d:.2s" id="bookCard">
+      <div id="booking">
+        <form id="form" autocomplete="on" novalidate>
+          <div class="step" id="stepSvc">
+            <div class="stephead"><span class="num">1</span><h3>Serviço</h3><span class="pick" id="svcPick"></span></div>
+            <div class="svcs" id="svcs" role="radiogroup" aria-label="Serviço"></div>
+            <div class="subq" id="optBox" hidden>
+              <p>Tipo</p>
+              <div class="seg wide" id="opts" role="group" aria-label="Aplicação ou manutenção"></div>
+            </div>
+            <div class="subq" id="extrasBox" hidden>
+              <p>Adicionais (opcional)</p>
+              <div class="extras" id="extras"></div>
+            </div>
+          </div>
+
+          <div class="step" id="stepDay">
+            <div class="stephead"><span class="num">2</span><h3>Dia</h3></div>
+            <div id="closed" class="closed" hidden>
+              <div class="big">🌸</div>
+              <h3>Agenda fechada no momento</h3>
+              <p>Novos horários são liberados toda semana. Volte em breve!</p>
+            </div>
+            <div id="calendar">
+              <div class="weeknav">
+                <button class="navbtn" id="prev" type="button" aria-label="Semana anterior">‹</button>
+                <div class="label" id="weekLabel">Carregando…</div>
+                <button class="navbtn" id="next" type="button" aria-label="Próxima semana">›</button>
+              </div>
+              <div class="days" id="days"></div>
+            </div>
+          </div>
+
+          <div class="step" id="stepTime">
+            <div class="stephead"><span class="num">3</span><h3>Horário</h3><span class="pick" id="timeDay"></span></div>
+            <div class="times" id="times"><p class="empty-hint">Escolha um dia para ver os horários.</p></div>
+          </div>
+
+          <div class="step" id="stepInfo">
+            <div class="stephead"><span class="num">4</span><h3>Seus dados</h3></div>
+            <div class="fields">
+              <label class="field">Nome
+                <input id="name" name="name" type="text" placeholder="Maria Silva" maxlength="80" autocomplete="name" required>
+              </label>
+              <label class="field">WhatsApp com DDD
+                <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="(21) 99999-9999" autocomplete="tel" required>
+              </label>
+            </div>
+          </div>
+        </form>
+        <p class="msg" id="msg" role="alert"></p>
+      </div>
+
+      <div class="sent" id="done" hidden>
+        <div class="burst">✓</div>
+        <h3>Pedido enviado!</h3>
+        <p class="lead" id="doneText"></p>
+        <ol class="timeline">
+          <li class="ok"><span class="dot">✓</span><div><b>Pedido registrado</b><span id="doneWhen"></span></div></li>
+          <li><span class="dot">2</span><div><b>Envie a mensagem no WhatsApp</b><span>Ela já vai pronta, é só tocar em enviar.</span></div></li>
+          <li><span class="dot">3</span><div><b>Aguarde a confirmação</b><span>Seu horário fica garantido quando a Beatriz confirmar.</span></div></li>
+        </ol>
+        <a class="wa" id="waBtn" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3Z"/></svg>
+          Enviar mensagem no WhatsApp
+        </a>
+        <button class="btn btn-line again" id="again" type="button">Fazer outro pedido</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="fl" id="footName">Beatriz Lima</div>
+    <div class="fr" id="footRole">Lash Designer</div>
+    <div id="footChips" class="chips" style="justify-content:center;margin:0 0 18px"></div>
+    <div id="copy"></div>
+  </div>
+</footer>
+
+<div class="bar" id="bar" aria-live="polite">
+  <div class="sum" id="sum"><b>Escolha o serviço</b>Comece pelo passo 1</div>
+  <button class="btn btn-primary" id="continue" type="button" disabled>Continuar</button>
+</div>
+
+<dialog id="confirmDlg">
+  <div class="sheet">
+    <h3>Confira seu pedido</h3>
+    <dl class="recap">
+      <div><dt>Serviço</dt><dd id="rSvc"></dd></div>
+      <div id="rExtrasRow"><dt>Adicionais</dt><dd id="rExtras"></dd></div>
+      <div><dt>Dia</dt><dd id="rDay"></dd></div>
+      <div><dt>Horário</dt><dd id="rTime"></dd></div>
+      <div><dt>Nome</dt><dd id="rName"></dd></div>
+      <div class="tot"><dt>Valor</dt><dd id="rTotal"></dd></div>
+    </dl>
+    <p class="note">O horário fica garantido depois que a Beatriz confirmar pelo WhatsApp.</p>
+    <div class="actions">
+      <button class="btn btn-line" id="cancelBtn" type="button">Voltar</button>
+      <button class="btn btn-primary" id="okBtn" type="button">Enviar pedido</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="lightbox" id="lightbox">
+  <div class="lb">
+    <img id="lbImg" alt="">
+    <button class="lb-close" id="lbClose" type="button" aria-label="Fechar">✕</button>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const brl = (n) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const brlShort = (n) => 'R$ ' + n.toLocaleString('pt-BR');
+  const WD = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  const OPT = { aplicacao: 'Aplicação', manutencao: 'Manutenção' };
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const fmtShort = (s) => s.slice(8) + '/' + s.slice(5, 7);
+  const fmtLong = (s) => new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', timeZone: 'UTC' }).format(new Date(s + 'T12:00:00Z'));
+  const fmtMid = (s) => WD[new Date(s + 'T12:00:00Z').getUTCDay()] + ', ' + fmtShort(s);
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const vagas = (n) => n === 1 ? '1 vaga' : n + ' vagas';
+
+  let CFG = { services: [], extras: [], business: {} };
+  const state = { serviceId: '', option: 'aplicacao', extras: new Set(), week: null, data: null, date: null, time: null };
+  const svc = () => CFG.services.find((s) => s.id === state.serviceId);
+  const total = () => {
+    const s = svc();
+    if (!s) return 0;
+    return (s.prices[state.option] || 0) + CFG.extras.filter((e) => state.extras.has(e.id)).reduce((a, e) => a + e.price, 0);
+  };
+
+  /* ================= Efeitos de rolagem ================= */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+  const observe = (root) => (root || document).querySelectorAll('.reveal:not(.in)').forEach((el) => io.observe(el));
+
+  // frase que acende palavra por palavra
+  const stText = $('statementText');
+  const ACCENT = ['fio.', 'detalhe.', 'cara.'];
+  stText.innerHTML = stText.textContent.split(' ').map((w) =>
+    '<span class="word' + (ACCENT.includes(w) ? ' accent' : '') + '">' + esc(w) + '</span>').join(' ');
+  const words = [...stText.querySelectorAll('.word')];
+
+  const nav = $('nav');
+  const statement = $('statement');
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const vh = window.innerHeight;
+      nav.classList.toggle('scrolled', window.scrollY > 8);
+      if (reduce) return;
+      // frase
+      const sr = statement.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -sr.top / (sr.height - vh)));
+      const lit = Math.round(p * (words.length + 1));
+      words.forEach((w, i) => w.classList.toggle('on', i < lit));
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+
+  /* ================= Antes e depois ================= */
+  const ba = $('ba');
+  const baRange = $('baRange');
+  const setPos = (v) => { ba.style.setProperty('--pos', v + '%'); baRange.value = v; };
+  let baUser = false;
+  baRange.addEventListener('input', () => { baUser = true; setPos(+baRange.value); });
+  baRange.addEventListener('pointerdown', () => { baUser = true; ba.classList.add('dragging'); });
+  window.addEventListener('pointerup', () => ba.classList.remove('dragging'));
+  // ao aparecer: a linha passa suave mostrando o antes, depois o depois, e para no meio
+  function baIntro() {
+    if (reduce || baUser) return;
+    const keys = [[0, 50], [900, 88], [2100, 12], [3100, 50]];
+    const ease = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    let start = null;
+    function frame(ts) {
+      if (baUser) return;
+      if (start === null) start = ts;
+      const t = ts - start;
+      let i = keys.findIndex((k) => k[0] > t);
+      if (i === -1) return setPos(50);
+      const [t0, v0] = keys[i - 1], [t1, v1] = keys[i];
+      setPos(v0 + (v1 - v0) * ease((t - t0) / (t1 - t0)));
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  new IntersectionObserver(([e], obs) => {
+    if (e.isIntersecting) { obs.disconnect(); setTimeout(baIntro, 600); }
+  }, { threshold: .55 }).observe(ba);
+
+  /* ================= Faixa de trabalhos ================= */
+  function renderShowcase() {
+    const tiles = [];
+    CFG.services.forEach((s) => s.photos.forEach((p) => tiles.push({ s, p })));
+    // intercala serviços para não ficar foto repetida do mesmo lado a lado
+    tiles.sort((a, b) => a.s.photos.indexOf(a.p) - b.s.photos.indexOf(b.p));
+    // miniaturas leves já recortadas (npm run thumbs); se faltar alguma, cai na foto original
+    const html = tiles.map(({ s, p }) =>
+      '<a class="tile" href="#catalogo" data-goto="' + esc(s.id) + '"><div class="ph"><img src="' + esc(thumb(p.src)) + '" data-full="' + esc(p.src) +
+      '" style="object-position:' + esc(p.focus) + '" alt="' + esc(s.name) + '" width="480" height="640" decoding="async" draggable="false"></div>' +
+      '<span>' + esc(s.name) + '<small>' + esc(s.category) + '</small></span></a>').join('');
+    // duas cópias para o loop infinito (mesmas URLs: o navegador baixa uma vez só; a cópia fica escondida dos leitores de tela)
+    $('track').innerHTML = html + '<div style="display:contents" aria-hidden="true">' + html.replace(/<a /g, '<a tabindex="-1" ') + '</div>';
+    // velocidade constante (~40px/s), independente de quantas fotos houver
+    $('track').style.setProperty('--dur', Math.max(30, tiles.length * 5.2) + 's');
+    // só anima quando a faixa está visível
+    new IntersectionObserver(([e]) => $('marquee').classList.toggle('run', e.isIntersecting)).observe($('marquee'));
+  }
+  const thumb = (src) => src.replace(/^img\//, 'img/thumbs/').replace(/\.(jpe?g|png|webp)$/i, '.webp');
+  // fallback para a foto original quando a miniatura não existe
+  document.addEventListener('error', (e) => {
+    const img = e.target;
+    if (img.tagName === 'IMG' && img.dataset.full && img.src.indexOf('/thumbs/') !== -1) img.src = img.dataset.full;
+  }, true);
+  $('track').addEventListener('click', (e) => {
+    const a = e.target.closest('[data-goto]');
+    if (!a) return;
+    e.preventDefault();
+    const card = $('grid').querySelector('[data-id="' + CSS.escape(a.dataset.goto) + '"]');
+    (card || $('catalogo')).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+  });
+
+  /* ================= Catálogo ================= */
+  function renderCatalog() {
+    const cats = [...new Set(CFG.services.map((s) => s.category))];
+    $('filters').innerHTML = ['Todos'].concat(cats).map((c, i) =>
+      '<button type="button" data-cat="' + esc(c) + '" aria-pressed="' + (i === 0) + '">' + esc(c) + '</button>').join('');
+
+    $('grid').innerHTML = CFG.services.map((s, i) => {
+      const slides = s.photos.map((p, j) =>
+        '<button type="button" data-zoom="' + esc(p.src) + '" aria-label="Ampliar foto ' + (j + 1) + ' de ' + esc(s.name) + '">' +
+        '<img src="' + esc(p.src) + '" style="object-position:' + esc(p.focus) + '" alt="' + esc(s.name) + ' foto ' + (j + 1) + '" loading="lazy"></button>').join('');
+      const dots = s.photos.length > 1 ? '<div class="dots">' + s.photos.map((_, j) => '<i' + (j === 0 ? ' class="on"' : '') + '></i>').join('') + '</div>' : '';
+      const prices = Object.keys(OPT).filter((o) => typeof s.prices[o] === 'number').map((o) =>
+        '<div class="price"><small>' + OPT[o] + '</small><b>' + brlShort(s.prices[o]) + '</b></div>').join('');
+      return '<div class="cell reveal" style="--d:' + ((i % 3) * 0.08) + 's" data-cat="' + esc(s.category) + '" data-id="' + esc(s.id) + '"><article class="card">' +
+        '<div class="media"><div class="slides">' + slides + '</div>' + dots + '<span class="tag">' + esc(s.category) + '</span></div>' +
+        '<div class="body"><h3>' + esc(s.name) + '</h3><p class="desc">' + esc(s.description) + '</p>' +
+        '<div class="prices">' + prices + '</div>' +
+        '<button class="btn btn-soft" type="button" data-book="' + esc(s.id) + '">Agendar este</button></div></article></div>';
+    }).join('');
+
+    // pontinhos acompanham o arrastar das fotos
+    $('grid').querySelectorAll('.slides').forEach((el) => {
+      const dots = el.parentElement.querySelectorAll('.dots i');
+      if (!dots.length) return;
+      el.addEventListener('scroll', () => {
+        const idx = Math.round(el.scrollLeft / el.clientWidth);
+        dots.forEach((d, i) => d.classList.toggle('on', i === idx));
+      }, { passive: true });
+    });
+
+    // tabela de valores
+    let rows = '<div class="row head"><span>Serviço</span><span class="v">Aplicação</span><span class="v">Manutenção</span></div>';
+    cats.forEach((c) => {
+      rows += '<div class="row group">' + esc(c) + '</div>';
+      CFG.services.filter((s) => s.category === c).forEach((s) => {
+        rows += '<div class="row"><span class="n">' + esc(s.name) + '</span>' +
+          Object.keys(OPT).map((o) => typeof s.prices[o] === 'number'
+            ? '<span class="v">' + brlShort(s.prices[o]) + '</span>' : '<span class="v none">—</span>').join('') + '</div>';
+      });
+    });
+    if (CFG.extras.length) {
+      rows += '<div class="row group">Adicionais</div>';
+      CFG.extras.forEach((e) => {
+        rows += '<div class="row"><span class="n">' + esc(e.name) + '</span><span></span><span class="v">' + brlShort(e.price) + '</span></div>';
+      });
+    }
+    $('table').innerHTML = rows;
+    observe();
+  }
+
+  $('filters').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-cat]');
+    if (!b) return;
+    $('filters').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b));
+    const cat = b.dataset.cat;
+    $('grid').querySelectorAll('.cell').forEach((cell) => {
+      cell.classList.toggle('hide', cat !== 'Todos' && cell.dataset.cat !== cat);
+    });
+  });
+
+  $('grid').addEventListener('click', (e) => {
+    const z = e.target.closest('[data-zoom]');
+    if (z) {
+      $('lbImg').src = z.dataset.zoom;
+      $('lbImg').alt = z.querySelector('img').alt;
+      $('lightbox').showModal();
+      return;
+    }
+    const b = e.target.closest('[data-book]');
+    if (b) {
+      selectService(b.dataset.book);
+      $('agendar').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    }
+  });
+  $('lbClose').addEventListener('click', () => $('lightbox').close());
+  $('lightbox').addEventListener('click', (e) => { if (e.target === $('lightbox')) $('lightbox').close(); });
+
+  /* ================= Agendamento ================= */
+  function renderServices() {
+    $('svcs').innerHTML = CFG.services.map((s) => {
+      const min = Math.min(...Object.values(s.prices));
+      return '<label class="opt"><input type="radio" name="svc" value="' + esc(s.id) + '"' + (s.id === state.serviceId ? ' checked' : '') + '>' +
+        '<span><img src="' + esc(thumb(s.photos[0].src)) + '" data-full="' + esc(s.photos[0].src) + '" alt="" loading="lazy"><span><b>' + esc(s.name) + '</b><small>a partir de ' + brlShort(min) + '</small></span></span></label>';
+    }).join('');
+    $('extras').innerHTML = CFG.extras.map((e) =>
+      '<label class="check"><input type="checkbox" value="' + esc(e.id) + '"' + (state.extras.has(e.id) ? ' checked' : '') + '>' +
+      '<span>' + esc(e.name) + '</span><em>+ ' + brlShort(e.price) + '</em></label>').join('');
+    renderOptions();
+  }
+
+  function renderOptions() {
+    const s = svc();
+    $('optBox').hidden = !s;
+    $('extrasBox').hidden = !s;
+    $('svcPick').textContent = s ? brl(total()) : '';
+    $('stepSvc').classList.toggle('done', !!s);
+    if (!s) return;
+    const opts = Object.keys(OPT).filter((o) => typeof s.prices[o] === 'number');
+    if (!opts.includes(state.option)) state.option = opts[0];
+    $('opts').innerHTML = opts.map((o) =>
+      '<button type="button" data-opt="' + o + '" aria-pressed="' + (o === state.option) + '">' + OPT[o] +
+      '<small>' + brlShort(s.prices[o]) + '</small></button>').join('');
+  }
+
+  function selectService(id) {
+    state.serviceId = id;
+    const r = $('svcs').querySelector('input[value="' + CSS.escape(id) + '"]');
+    if (r) r.checked = true;
+    renderOptions();
+    updateBar();
+  }
+
+  $('svcs').addEventListener('change', (e) => selectService(e.target.value));
+  $('opts').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-opt]');
+    if (!b) return;
+    state.option = b.dataset.opt;
+    renderOptions();
+    updateBar();
+  });
+  $('extras').addEventListener('change', (e) => {
+    if (e.target.checked) state.extras.add(e.target.value); else state.extras.delete(e.target.value);
+    renderOptions();
+    updateBar();
+  });
+
+  async function loadWeek(week) {
+    $('msg').textContent = '';
+    try {
+      const r = await fetch('/api/availability' + (week ? '?week=' + week : ''));
+      if (!r.ok) throw new Error();
+      const data = await r.json();
+      if (data.empty) {
+        $('closed').hidden = false;
+        $('calendar').hidden = true;
+        state.data = null;
+        renderTimes();
+        updateBar();
+        return;
+      }
+      $('closed').hidden = true;
+      $('calendar').hidden = false;
+      state.data = data;
+      state.week = data.weekStart;
+      const day = data.days.find((d) => d.date === state.date);
+      if (!day || day.status !== 'available') { state.date = null; state.time = null; }
+      else if (!day.slots.some((s) => s.time === state.time && s.status === 'available')) state.time = null;
+      renderCalendar();
+    } catch {
+      $('msg').textContent = 'Não foi possível carregar os horários. Verifique sua conexão e tente novamente.';
+    }
+  }
+
+  function renderCalendar() {
+    const d = state.data;
+    $('weekLabel').textContent = 'Semana de ' + fmtShort(d.weekStart) + ' a ' + fmtShort(d.weekEnd);
+    $('prev').disabled = !d.hasPrev;
+    $('next').disabled = !d.hasNext;
+    const box = $('days');
+    box.innerHTML = '';
+    if (!d.days.length) box.innerHTML = '<p class="empty-hint">Sem atendimento nesta semana.</p>';
+    d.days.forEach((day) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'day' + (state.date === day.date ? ' selected' : '');
+      b.disabled = day.status !== 'available';
+      b.setAttribute('aria-pressed', state.date === day.date);
+      const label = day.status === 'past' ? 'encerrado' : day.status === 'full' ? 'lotado' : vagas(day.remaining);
+      b.innerHTML = '<span class="wd">' + WD[day.weekday] + '</span><span class="dn">' + day.date.slice(8) + '</span><span class="st">' + label + '</span>';
+      b.addEventListener('click', () => {
+        if (state.date !== day.date) state.time = null;
+        state.date = day.date;
+        renderCalendar();
+        $('stepTime').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
+      });
+      box.appendChild(b);
+    });
+    $('stepDay').classList.toggle('done', !!state.date);
+    renderTimes();
+    updateBar();
+  }
+
+  function renderTimes() {
+    const day = state.data && state.data.days.find((d) => d.date === state.date);
+    const box = $('times');
+    $('timeDay').textContent = day ? cap(fmtMid(day.date)) : '';
+    $('stepTime').classList.toggle('done', !!state.time);
+    if (!day) { box.innerHTML = '<p class="empty-hint">Escolha um dia para ver os horários.</p>'; return; }
+    box.innerHTML = '';
+    day.slots.forEach((s) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'time' + (state.time === s.time ? ' selected' : '');
+      b.disabled = s.status !== 'available';
+      b.setAttribute('aria-pressed', state.time === s.time);
+      b.innerHTML = s.time + (s.status === 'past' ? '<small>encerrado</small>' : s.status === 'full' ? '<small>lotado</small>' : '<small>' + vagas(s.remaining) + '</small>');
+      b.addEventListener('click', () => {
+        state.time = s.time;
+        renderTimes();
+        updateBar();
+        $('stepInfo').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
+      });
+      box.appendChild(b);
+    });
+  }
+
+  const phoneDigits = () => $('phone').value.replace(/\D/g, '');
+  const infoValid = () => $('name').value.trim().length >= 2 && phoneDigits().length >= 10;
+
+  function updateBar() {
+    const s = svc();
+    const sum = $('sum');
+    const btn = $('continue');
+    sum.innerHTML = '';
+    const b = document.createElement('b');
+    b.textContent = s ? s.name + ' · ' + OPT[state.option] : 'Escolha o serviço';
+    sum.appendChild(b);
+    if (s) {
+      const t = document.createElement('span');
+      t.className = 'total';
+      t.textContent = brl(total());
+      sum.appendChild(t);
+      sum.appendChild(document.createTextNode(state.date ? ' · ' + cap(fmtMid(state.date)) + (state.time ? ' às ' + state.time : '') : ' · escolha o dia'));
+    } else {
+      sum.appendChild(document.createTextNode('Comece pelo passo 1'));
+    }
+    $('stepInfo').classList.toggle('done', infoValid());
+    const ready = s && state.date && state.time && infoValid();
+    btn.disabled = !ready;
+    btn.textContent = ready ? 'Pedir horário' : !s ? 'Continuar' : !state.date ? 'Escolha o dia' : !state.time ? 'Escolha o horário' : 'Seus dados';
+  }
+
+  // a barra aparece só na seção de agendamento
+  const barIo = new IntersectionObserver(([e]) => $('bar').classList.toggle('show', e.isIntersecting && $('done').hidden), { threshold: .05 });
+  barIo.observe($('bookCard'));
+
+  $('phone').addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 6) v = '(' + v.slice(0, 2) + ') ' + v.slice(2, v.length - 4) + '-' + v.slice(-4);
+    else if (v.length > 2) v = '(' + v.slice(0, 2) + ') ' + v.slice(2);
+    e.target.value = v;
+  });
+  ['name', 'phone'].forEach((id) => $(id).addEventListener('input', updateBar));
+
+  function openConfirm() {
+    $('msg').textContent = '';
+    const s = svc();
+    if (!s) { $('msg').textContent = 'Escolha o serviço.'; return; }
+    if (!state.date || !state.time) { $('msg').textContent = 'Escolha o dia e o horário.'; return; }
+    if ($('name').value.trim().length < 2) { $('msg').textContent = 'Informe seu nome.'; $('name').focus(); return; }
+    if (phoneDigits().length < 10) { $('msg').textContent = 'Informe um WhatsApp válido com DDD.'; $('phone').focus(); return; }
+    const ex = CFG.extras.filter((e) => state.extras.has(e.id));
+    $('rSvc').textContent = s.name + ' (' + OPT[state.option] + ')';
+    $('rExtrasRow').hidden = !ex.length;
+    $('rExtras').textContent = ex.map((e) => e.name).join(', ');
+    $('rDay').textContent = cap(fmtLong(state.date));
+    $('rTime').textContent = state.time;
+    $('rName').textContent = $('name').value.trim();
+    $('rTotal').textContent = brl(total());
+    $('confirmDlg').showModal();
+  }
+  $('continue').addEventListener('click', openConfirm);
+  $('form').addEventListener('submit', (e) => { e.preventDefault(); openConfirm(); });
+  $('cancelBtn').addEventListener('click', () => $('confirmDlg').close());
+
+  $('okBtn').addEventListener('click', async () => {
+    const ok = $('okBtn');
+    ok.disabled = true;
+    ok.textContent = 'Enviando…';
+    try {
+      const r = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: $('name').value, phone: $('phone').value, date: state.date, time: state.time,
+          serviceId: state.serviceId, option: state.option, extras: [...state.extras],
+        }),
+      });
+      const j = await r.json();
+      $('confirmDlg').close();
+      if (!r.ok) {
+        $('msg').textContent = j.error || 'Não foi possível enviar o pedido.';
+        if (r.status === 409) { state.time = null; loadWeek(state.week); }
+        $('msg').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+        return;
+      }
+      showDone(j);
+    } catch {
+      $('confirmDlg').close();
+      $('msg').textContent = 'Erro de conexão. Tente novamente.';
+    } finally {
+      ok.disabled = false;
+      ok.textContent = 'Enviar pedido';
+    }
+  });
+
+  function showDone(j) {
+    $('booking').hidden = true;
+    $('done').hidden = false;
+    $('bar').classList.remove('show');
+    $('doneText').textContent = j.booking.name.split(' ')[0] + ', falta só um passo para garantir seu horário.';
+    $('doneWhen').textContent = cap(j.booking.dateLabel) + ' às ' + j.booking.time + ' · ' + brl(j.booking.total);
+    $('waBtn').href = j.whatsappLink;
+    $('bookCard').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  $('again').addEventListener('click', () => {
+    state.date = null;
+    state.time = null;
+    $('done').hidden = true;
+    $('booking').hidden = false;
+    loadWeek(state.week);
+    $('bar').classList.add('show');
+  });
+  $('prev').addEventListener('click', () => state.data && loadWeek(state.data.prevWeek));
+  $('next').addEventListener('click', () => state.data && loadWeek(state.data.nextWeek));
+
+  /* ================= Dados do estúdio ================= */
+  function renderBusiness() {
+    const b = CFG.business;
+    const parts = (b.name || '').trim().split(/\s+/);
+    if (parts[0]) {
+      $('nameA').textContent = parts[0].toUpperCase();
+      $('nameB').textContent = parts.slice(1).join(' ').toUpperCase();
+      $('firstName').textContent = parts[0];
+      $('navName').textContent = b.name;
+      $('footName').textContent = b.name;
+      $('sign').textContent = '— ' + parts[0];
+    }
+    if (b.role) { $('role').textContent = b.role; $('footRole').textContent = b.role; }
+    if (b.tagline) $('tagline').textContent = b.tagline;
+    if (b.about) $('aboutText').textContent = b.about;
+    $('copy').textContent = '© ' + new Date().getFullYear() + ' ' + (b.name || '') + ' · Agendamento online';
+    const chips = [];
+    if (b.instagram) chips.push(['https://instagram.com/' + encodeURIComponent(b.instagram), '📷 @' + b.instagram]);
+    if (b.address) chips.push(['https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(b.address), '📍 ' + b.address]);
+    ['chips', 'footChips'].forEach((id) => {
+      $(id).innerHTML = chips.map(([href, label]) => '<a class="chip" href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(label) + '</a>').join('');
+    });
+  }
+
+  fetch('/api/config').then((r) => r.json()).then((c) => {
+    CFG = c;
+    // foto pode ser "img/x.jpg" ou { src, focus } (focus = ponto do corte, ex. "70% 50%")
+    CFG.services.forEach((s) => {
+      s.photos = s.photos.map((p) => (typeof p === 'string' ? { src: p, focus: '50% 50%' } : { focus: '50% 50%', ...p }));
+    });
+    renderBusiness();
+    renderShowcase();
+    renderCatalog();
+    renderServices();
+    updateBar();
+  }).catch(() => { $('msg').textContent = 'Não foi possível carregar o catálogo. Recarregue a página.'; });
+
+  observe();
+  onScroll();
+  loadWeek();
+})();
+</script>
+</body>
+</html>

@@ -146,6 +146,18 @@
   .role { font-family: var(--serif); font-weight: 600; letter-spacing: .16em; text-transform: uppercase; font-size: clamp(1.05rem, 3.8vw, 2rem); line-height: 1.1; color: var(--pink-600); margin: 6px 0 0; padding-left: .16em; }
   .hero .sub { max-width: 560px; margin-inline: auto; margin-top: 26px; }
   .hero .cta { margin-top: 30px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .social { margin-top: 18px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .social:empty { display: none; }
+  .soc {
+    display: inline-flex; align-items: center; gap: 12px; padding: 10px 20px 10px 14px; border-radius: 999px; text-decoration: none; color: var(--ink);
+    background: #fff; border: 1.5px solid var(--line); text-align: left; line-height: 1.15; transition: transform .35s var(--ease), border-color .2s, box-shadow .35s var(--ease);
+  }
+  .soc:hover { transform: translateY(-2px); border-color: var(--pink-400); box-shadow: 0 10px 24px rgba(200, 63, 114, .12); }
+  .soc svg { width: 26px; height: 26px; flex: none; }
+  .soc.ig svg { color: var(--pink-600); }
+  .soc.zap svg { color: var(--wa); }
+  .soc span { display: block; font-weight: 600; font-size: .95rem; }
+  .soc small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; }
   .spark { position: absolute; color: var(--pink-200); pointer-events: none; animation: twinkle 4s ease-in-out infinite; }
   .spark svg { width: 100%; height: 100%; display: block; }
   @keyframes twinkle { 0%, 100% { opacity: .35; transform: scale(.85) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(12deg); } }
@@ -491,6 +503,7 @@
       <a class="btn btn-primary" href="#agendar">Agendar horário</a>
       <a class="btn btn-ghost" href="#catalogo">Ver catálogo ›</a>
     </div>
+    <div class="social reveal" style="--d:.44s" id="heroSocial"></div>
   </div>
   <div class="showcase reveal" style="--d:.5s">
     <p class="showcase-title">Trabalhos reais</p>
@@ -571,6 +584,10 @@
             <div class="subq" id="extrasBox" hidden>
               <p>Adicionais (opcional)</p>
               <div class="extras" id="extras"></div>
+            </div>
+            <div class="subq" id="payBox" hidden>
+              <p>Forma de pagamento</p>
+              <div class="seg wide" id="pay" role="group" aria-label="Forma de pagamento"></div>
             </div>
           </div>
 
@@ -653,6 +670,7 @@
       <div><dt>Dia</dt><dd id="rDay"></dd></div>
       <div><dt>Horário</dt><dd id="rTime"></dd></div>
       <div><dt>Nome</dt><dd id="rName"></dd></div>
+      <div><dt>Pagamento</dt><dd id="rPay"></dd></div>
       <div class="tot"><dt>Valor</dt><dd id="rTotal"></dd></div>
     </dl>
     <p class="note">O horário fica garantido depois que a Beatriz confirmar pelo WhatsApp.</p>
@@ -687,7 +705,8 @@
   const vagas = (n) => n === 1 ? '1 vaga' : n + ' vagas';
 
   let CFG = { services: [], extras: [], business: {} };
-  const state = { serviceId: '', option: 'aplicacao', extras: new Set(), week: null, data: null, date: null, time: null };
+  const PAY = { pix: { label: 'Pix', note: '' }, cartao: { label: 'Cartão', note: 'por aproximação' } };
+  const state = { serviceId: '', option: 'aplicacao', payment: '', extras: new Set(), week: null, data: null, date: null, time: null };
   const svc = () => CFG.services.find((s) => s.id === state.serviceId);
   const total = () => {
     const s = svc();
@@ -893,12 +912,14 @@
       '<label class="check"><input type="checkbox" value="' + esc(e.id) + '"' + (state.extras.has(e.id) ? ' checked' : '') + '>' +
       '<span>' + esc(e.name) + '</span><em>+ ' + brlShort(e.price) + '</em></label>').join('');
     renderOptions();
+    renderPayment();
   }
 
   function renderOptions() {
     const s = svc();
     $('optBox').hidden = !s;
     $('extrasBox').hidden = !s;
+    $('payBox').hidden = !s;
     $('svcPick').textContent = s ? brl(total()) : '';
     $('stepSvc').classList.toggle('done', !!s);
     if (!s) return;
@@ -908,6 +929,19 @@
       '<button type="button" data-opt="' + o + '" aria-pressed="' + (o === state.option) + '">' + OPT[o] +
       '<small>' + brlShort(s.prices[o]) + '</small></button>').join('');
   }
+
+  function renderPayment() {
+    $('pay').innerHTML = Object.keys(PAY).map((k) =>
+      '<button type="button" data-pay="' + k + '" aria-pressed="' + (k === state.payment) + '">' + PAY[k].label +
+      (PAY[k].note ? '<small>' + PAY[k].note + '</small>' : '') + '</button>').join('');
+  }
+  $('pay').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-pay]');
+    if (!b) return;
+    state.payment = b.dataset.pay;
+    renderPayment();
+    updateBar();
+  });
 
   function selectService(id) {
     state.serviceId = id;
@@ -1032,9 +1066,9 @@
       sum.appendChild(document.createTextNode('Comece pelo passo 1'));
     }
     $('stepInfo').classList.toggle('done', infoValid());
-    const ready = s && state.date && state.time && infoValid();
+    const ready = s && state.date && state.time && state.payment && infoValid();
     btn.disabled = !ready;
-    btn.textContent = ready ? 'Pedir horário' : !s ? 'Continuar' : !state.date ? 'Escolha o dia' : !state.time ? 'Escolha o horário' : 'Seus dados';
+    btn.textContent = ready ? 'Pedir horário' : !s ? 'Continuar' : !state.date ? 'Escolha o dia' : !state.time ? 'Escolha o horário' : !state.payment ? 'Forma de pagamento' : 'Seus dados';
   }
 
   // a barra aparece só na seção de agendamento
@@ -1054,6 +1088,7 @@
     const s = svc();
     if (!s) { $('msg').textContent = 'Escolha o serviço.'; return; }
     if (!state.date || !state.time) { $('msg').textContent = 'Escolha o dia e o horário.'; return; }
+    if (!state.payment) { $('msg').textContent = 'Escolha a forma de pagamento (Pix ou cartão).'; $('payBox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); return; }
     if ($('name').value.trim().length < 2) { $('msg').textContent = 'Informe seu nome.'; $('name').focus(); return; }
     if (phoneDigits().length < 10) { $('msg').textContent = 'Informe um WhatsApp válido com DDD.'; $('phone').focus(); return; }
     const ex = CFG.extras.filter((e) => state.extras.has(e.id));
@@ -1063,6 +1098,7 @@
     $('rDay').textContent = cap(fmtLong(state.date));
     $('rTime').textContent = state.time;
     $('rName').textContent = $('name').value.trim();
+    $('rPay').textContent = PAY[state.payment].label + (PAY[state.payment].note ? ' (' + PAY[state.payment].note + ')' : '');
     $('rTotal').textContent = brl(total());
     $('confirmDlg').showModal();
   }
@@ -1080,7 +1116,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: $('name').value, phone: $('phone').value, date: state.date, time: state.time,
-          serviceId: state.serviceId, option: state.option, extras: [...state.extras],
+          serviceId: state.serviceId, option: state.option, extras: [...state.extras], payment: state.payment,
         }),
       });
       const j = await r.json();
@@ -1139,7 +1175,18 @@
     if (b.about) $('aboutText').textContent = b.about;
     $('copy').textContent = '© ' + new Date().getFullYear() + ' ' + (b.name || '') + ' · Agendamento online';
     const chips = [];
+    const igUrl = b.instagram ? 'https://instagram.com/' + encodeURIComponent(b.instagram) : '';
+    const wa = String(b.whatsapp || '').replace(/\D/g, '');
+    const waUrl = wa ? 'https://api.whatsapp.com/send?phone=' + wa + '&text=' + encodeURIComponent('Olá, ' + (parts[0] || '') + '! Vim pelo site e gostaria de mais informações. 💖') : '';
+    const waLabel = wa ? '(' + wa.slice(-11, -9) + ') ' + wa.slice(-9, -4) + '-' + wa.slice(-4) : '';
+    // botões grandes no topo (Instagram e WhatsApp)
+    const IG_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>';
+    const WA_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3Z"/></svg>';
+    $('heroSocial').innerHTML =
+      (igUrl ? '<a class="soc ig" href="' + esc(igUrl) + '" target="_blank" rel="noopener">' + IG_SVG + '<span>Instagram<small>@' + esc(b.instagram) + '</small></span></a>' : '') +
+      (waUrl ? '<a class="soc zap" href="' + esc(waUrl) + '" target="_blank" rel="noopener">' + WA_SVG + '<span>WhatsApp<small>' + esc(waLabel) + '</small></span></a>' : '');
     if (b.instagram) chips.push(['https://instagram.com/' + encodeURIComponent(b.instagram), '📷 @' + b.instagram]);
+    if (waUrl) chips.push([waUrl, '💬 ' + waLabel]);
     if (b.address) chips.push(['https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(b.address), '📍 ' + b.address]);
     ['chips', 'footChips'].forEach((id) => {
       $(id).innerHTML = chips.map(([href, label]) => '<a class="chip" href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(label) + '</a>').join('');

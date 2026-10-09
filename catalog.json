@@ -5,8 +5,10 @@
     "tagline": "Realçando a beleza natural do seu olhar.",
     "about": "Me chamo Beatriz e sou apaixonada pela área da beleza, sempre buscando realçar a autoestima e destacar a beleza natural de cada cliente. Trabalho com muito carinho, atenção aos detalhes e atendimentos personalizados, proporcionando uma experiência leve, confortável e especial. Meu objetivo é fazer com que você se sinta ainda mais linda, confiante e satisfeita com o seu olhar!",
     "photos": ["img/beatriz-1.jpg", "img/beatriz-2.jpg"],
+    "deposit": { "amount": 20, "pixName": "Beatriz Lima Santos", "bank": "Nubank", "pixKeyType": "Telefone", "pixKey": "21965193674" },
     "address": "",
-    "instagram": ""
+    "instagram": "lash.beatrizlima",
+    "whatsapp": "5521965193674"
   },
   "services": [
     {

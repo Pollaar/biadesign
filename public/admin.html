@@ -201,6 +201,7 @@
   .bk .who .meta { color: var(--muted); font-size: .82rem; margin-top: 2px; display: flex; gap: 10px; flex-wrap: wrap; }
   .bk .who .meta a { color: var(--muted); text-decoration: none; }
   .bk .who .meta a:hover { color: var(--pink-600); }
+  .bk .who .meta .pay { color: var(--ink-2); font-weight: 600; }
   .bk .who .warn { color: var(--warn); font-size: .8rem; margin-top: 4px; }
   .bk .acts { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
   .pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 999px; font-size: .72rem; font-weight: 600; }
@@ -503,11 +504,23 @@
     return '<span class="lbl">' + name + '<small>' + dm(mon) + ' a ' + dm(addDays(mon, 6)) + '</small></span>';
   };
 
+  const PAY = { pix: 'Pix', cartao: 'Cartão (aproximação)' };
+
   // ---------- mensagens prontas para a cliente ----------
   function waText(b, kind) {
     const first = b.name.split(' ')[0];
     const when = longBR(b.date) + ' às ' + b.time;
-    if (kind === 'confirmed') return 'Olá, ' + first + '! Seu agendamento (' + b.model + ') está confirmado para ' + when + '. Te esperamos! 💖';
+    if (kind === 'confirmed') {
+      // pedido do sinal + dados do Pix (iguais ao servidor; ficam em catalog.json › business.deposit)
+      const d = (S.biz && S.biz.deposit) || {};
+      const amount = 'R$' + Number(d.amount || 20).toFixed(2).replace('.', ',');
+      return 'Para confirmar o seu horário eu peço um sinal de ' + amount + ' o valor será abatido no dia do procedimento 🥰\n\n' +
+        'Pix 👇🏽\n' + (d.pixName || '') + '\nBanco ' + (d.bank || '') + '\n' + (d.pixKeyType || 'Chave') + '\n*' + (d.pixKey || '') + '*\n\n' +
+        'Leia com atenção\n\n' +
+        '✨O horário será confirmado somente após o sinal.\n' +
+        '✨Em caso de desistência o valor não será devolvido.\n' +
+        '✨Em caso de imprevistos avisar com 24h de antecedência.';
+    }
     if (kind === 'cancelled') return 'Olá, ' + first + '! Precisei cancelar seu agendamento de ' + when + '. Desculpe pelo transtorno! Se quiser, escolha outro horário pelo site. 💖';
     if (kind === 'rejected') return 'Olá, ' + first + '! Infelizmente não consigo te atender em ' + when + '. Se quiser, escolha outro horário pelo site. 💖';
     return 'Olá, ' + first + '!';
@@ -590,7 +603,8 @@
       '<div class="who"><div class="nm">' + esc(b.name) + (opts.hidePill ? '' : ' <span class="pill ' + st + '">' + STATUS[st] + '</span>') + '</div>' +
         '<div class="svc">' + esc(b.model || '—') + '</div>' +
         '<div class="meta"><a href="https://wa.me/' + esc(b.phone) + '" target="_blank" rel="noopener">' + esc(fmtPhone(b.phone)) + '</a>' +
-        (typeof b.total === 'number' ? '<span>' + brl(b.total) + '</span>' : '') + '</div>' +
+        (typeof b.total === 'number' ? '<span>' + brl(b.total) + '</span>' : '') +
+        (PAY[b.payment] ? '<span class="pay">' + (b.payment === 'pix' ? '💠 ' : '💳 ') + esc(PAY[b.payment]) + '</span>' : '') + '</div>' +
         (st === 'pending' && !b.canConfirm ? '<div class="warn">Não dá para confirmar: horário lotado, removido ou já passou.</div>' : '') +
       '</div>' +
       '<div class="acts">' + acts + '</div></div>';

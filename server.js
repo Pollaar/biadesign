@@ -45,6 +45,8 @@ function catalog() {
 }
 catalog();
 const OPTION_LABEL = { aplicacao: 'Aplicação', manutencao: 'Manutenção' };
+// forma de pagamento (só Pix ou cartão por aproximação)
+const PAYMENT_LABEL = { pix: 'Pix', cartao: 'Cartão (aproximação)' };
 const brl = (n) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
 // Monta a descrição e o valor do pedido a partir do catálogo (ou lança erro 400)
@@ -222,6 +224,8 @@ app.post('/api/bookings', async (req, res) => {
     return res.status(400).json({ error: e.message });
   }
   const { model, total } = order;
+  const payment = String(req.body.payment || '');
+  if (!(payment in PAYMENT_LABEL)) return res.status(400).json({ error: 'Escolha a forma de pagamento (Pix ou cartão).' });
 
   if (name.length < 2 || name.length > 80) return res.status(400).json({ error: 'Informe seu nome.' });
   if (phone.length < 12 || phone.length > 13) return res.status(400).json({ error: 'Informe um WhatsApp válido com DDD.' });
@@ -245,7 +249,7 @@ app.post('/api/bookings', async (req, res) => {
         throw httpError(409, 'Esse horário já tem muitos pedidos aguardando confirmação. Escolha outro.');
       }
       const b = {
-        id: crypto.randomUUID(), name, phone, date, time, model, total,
+        id: crypto.randomUUID(), name, phone, date, time, model, total, payment,
         serviceId: order.service.id, option: order.option, extras: order.extras.map((e) => e.id),
         status: 'pending', createdAt: new Date().toISOString(),
       };
@@ -267,14 +271,15 @@ app.post('/api/bookings', async (req, res) => {
     `Horário: ${time}\n` +
     `Serviço: ${order.service.name} (${OPTION_LABEL[order.option]})\n` +
     (order.extras.length ? `Adicionais: ${order.extras.map((e) => e.name).join(', ')}\n` : '') +
-    `Valor: ${brl(total)}\n\n` +
+    `Valor: ${brl(total)}\n` +
+    `Pagamento: ${PAYMENT_LABEL[payment]}\n\n` +
     `Pode confirmar, por favor?`;
 
   res.status(201).json({
     ok: true,
     booking: {
       id: booking.id, name: booking.name, date: booking.date, time: booking.time,
-      model: booking.model, total: booking.total, status: booking.status, dateLabel: formatBR(booking.date),
+      model: booking.model, total: booking.total, payment: booking.payment, status: booking.status, dateLabel: formatBR(booking.date),
     },
     message,
     whatsappLink: buildWaLink(OWNER_PHONE, message),
@@ -291,7 +296,7 @@ async function notifyNewBooking(b) {
   const wd = new Intl.DateTimeFormat('pt-BR', { weekday: 'short', timeZone: 'UTC' }).format(new Date(b.date + 'T12:00:00Z')).replace('.', '');
   await push.sendToAll({
     title: 'Novo pedido 💖',
-    body: `${b.name} · ${wd} ${fmtShort(b.date)} às ${b.time}\n${b.model}${typeof b.total === 'number' ? ' · ' + brl(b.total) : ''}`,
+    body: `${b.name} · ${wd} ${fmtShort(b.date)} às ${b.time}\n${b.model}${typeof b.total === 'number' ? ' · ' + brl(b.total) : ''}${PAYMENT_LABEL[b.payment] ? ' · ' + PAYMENT_LABEL[b.payment] : ''}`,
     url: '/admin#pedidos',
     tag: 'pedido-' + b.id,
     badge: pending,
@@ -356,7 +361,7 @@ app.get('/api/admin/weeks/:week', requireAdmin, async (req, res) => {
         .sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')))
         .map((b) => ({
           id: b.id, name: b.name, phone: b.phone, date: b.date, time: b.time || '', model: b.model || '',
-          total: typeof b.total === 'number' ? b.total : null,
+          total: typeof b.total === 'number' ? b.total : null, payment: b.payment || '',
           status: statusOf(b), canConfirm: canConfirm(db, b),
         })),
     });
@@ -480,7 +485,19 @@ app.get('/api/admin/bookings', requireAdmin, async (req, res) => {
 function clientMessage(b, status) {
   const first = b.name.split(' ')[0];
   if (status === 'confirmed') {
-    return `Olá, ${first}! Seu agendamento (${b.model}) está confirmado para ${formatBR(b.date)} às ${b.time}. Te esperamos! 💖`;
+    // pedido do sinal + dados do Pix (valor e dados ficam em catalog.json › business.deposit)
+    const d = catalog().business.deposit || {};
+    const amount = `R$${Number(d.amount || 20).toFixed(2).replace('.', ',')}`;
+    return `Para confirmar o seu horário eu peço um sinal de ${amount} o valor será abatido no dia do procedimento 🥰\n\n` +
+      `Pix 👇🏽\n` +
+      `${d.pixName || ''}\n` +
+      `Banco ${d.bank || ''}\n` +
+      `${d.pixKeyType || 'Chave'}\n` +
+      `*${d.pixKey || ''}*\n\n` +
+      `Leia com atenção\n\n` +
+      `✨O horário será confirmado somente após o sinal.\n` +
+      `✨Em caso de desistência o valor não será devolvido.\n` +
+      `✨Em caso de imprevistos avisar com 24h de antecedência.`;
   }
   if (status === 'cancelled') {
     return `Olá, ${first}! Precisei cancelar seu agendamento de ${formatBR(b.date)} às ${b.time}. ` +

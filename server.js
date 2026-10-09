@@ -565,9 +565,14 @@ app.get('/healthz', (req, res) => res.type('text').send('ok'));
 (async () => {
   try {
     await store.ping();
+  } catch (e) {
+    console.error('Não foi possível conectar ao armazenamento (' + store.mode + '). Confira UPSTASH_REDIS_REST_URL e UPSTASH_REDIS_REST_TOKEN:', e.message);
+    process.exit(1);
+  }
+  try {
     await push.init();
   } catch (e) {
-    console.error('Não foi possível conectar ao armazenamento (' + store.mode + '):', e.message);
+    console.error('Erro na configuração das notificações:', e.message);
     process.exit(1);
   }
   app.listen(PORT, () => {

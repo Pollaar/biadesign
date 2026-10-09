@@ -23,11 +23,20 @@ function init() {
         }
       }
       // a Apple recusa o envio sem um "subject" válido (mailto: ou https:)
-      webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:admin@example.com', keys.publicKey, keys.privateKey);
+      webpush.setVapidDetails(vapidSubject(), keys.publicKey, keys.privateKey);
       publicKey = keys.publicKey;
     })().catch((e) => { ready = null; throw e; });
   }
   return ready;
+}
+
+// Aceita "mailto:email", "https://site" ou só o e-mail (completa o mailto: sozinho)
+function vapidSubject() {
+  const raw = String(process.env.VAPID_SUBJECT || '').trim();
+  if (!raw) return 'mailto:admin@example.com';
+  if (/^(mailto:|https:\/\/)/i.test(raw)) return raw;
+  if (/^[^\s@:]+@[^\s@]+\.[^\s@]+$/.test(raw)) return 'mailto:' + raw;
+  throw new Error(`VAPID_SUBJECT inválido ("${raw}"). Use mailto: seguido do e-mail, por exemplo: mailto:seu-email@gmail.com`);
 }
 
 const readSubs = () => store.getJSON('push-subscriptions', []);

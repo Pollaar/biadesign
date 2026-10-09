@@ -141,14 +141,11 @@
   /* antes e depois */
   .ba-wrap { margin: 0; }
   .ba {
-    position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow);
+    position: relative; aspect-ratio: 9 / 16; max-width: 400px; margin-inline: auto; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow);
     background: var(--pink-50); user-select: none; -webkit-user-select: none; touch-action: pan-y;
   }
-  .ba-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; pointer-events: none; }
+  .ba-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 50%; pointer-events: none; }
   .ba-before { position: absolute; inset: 0; overflow: hidden; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
-  /* alinha os rostos das duas fotos (o "antes" foi tirado mais de longe) */
-  #baBefore { object-position: 50% 50%; transform: scale(1.32); transform-origin: 58% 50%; }
-  #baAfter { object-position: 50% 42%; }
   .ba-line {
     position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; margin-left: -1px; background: #fff;
     box-shadow: 0 0 12px rgba(0, 0, 0, .25); pointer-events: none;
@@ -225,9 +222,10 @@
   .media { position: relative; aspect-ratio: 4 / 5; background: var(--pink-50); overflow: hidden; }
   .slides { position: absolute; inset: 0; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .slides::-webkit-scrollbar { display: none; }
-  .slides button { flex: 0 0 100%; height: 100%; scroll-snap-align: center; border: 0; padding: 0; cursor: zoom-in; background: none; overflow: hidden; }
-  .slides img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
-  .card:hover .slides img { transform: scale(1.04); }
+  /* foto inteira e centralizada, sobre um fundo desfocado da própria foto */
+  .slides button { position: relative; flex: 0 0 100%; height: 100%; scroll-snap-align: center; border: 0; padding: 0; cursor: zoom-in; background: var(--pink-50); overflow: hidden; }
+  .slides button::before { content: ""; position: absolute; inset: -20px; background: var(--bg) center / cover; filter: blur(22px); }
+  .slides img { position: relative; width: 100%; height: 100%; object-fit: contain; object-position: 50% 50%; }
   .dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px; pointer-events: none; }
   .dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .6); transition: width .4s var(--ease), background .3s; }
   .dots i.on { width: 18px; background: #fff; }
@@ -721,7 +719,7 @@
     // miniaturas leves já recortadas (npm run thumbs); se faltar alguma, cai na foto original
     const html = tiles.map(({ s, p }) =>
       '<a class="tile" href="#catalogo" data-goto="' + esc(s.id) + '"><div class="ph"><img src="' + esc(thumb(p.src)) + '" data-full="' + esc(p.src) +
-      '" style="object-position:' + esc(p.focus) + '" alt="' + esc(s.name) + '" width="480" height="640" decoding="async" draggable="false"></div>' +
+      '" alt="' + esc(s.name) + '" width="480" height="640" decoding="async" draggable="false"></div>' +
       '<span>' + esc(s.name) + '<small>' + esc(s.category) + '</small></span></a>').join('');
     // duas cópias para o loop infinito (mesmas URLs: o navegador baixa uma vez só; a cópia fica escondida dos leitores de tela)
     $('track').innerHTML = html + '<div style="display:contents" aria-hidden="true">' + html.replace(/<a /g, '<a tabindex="-1" ') + '</div>';
@@ -752,8 +750,8 @@
 
     $('grid').innerHTML = CFG.services.map((s, i) => {
       const slides = s.photos.map((p, j) =>
-        '<button type="button" data-zoom="' + esc(p.src) + '" aria-label="Ampliar foto ' + (j + 1) + ' de ' + esc(s.name) + '">' +
-        '<img src="' + esc(p.src) + '" style="object-position:' + esc(p.focus) + '" alt="' + esc(s.name) + ' foto ' + (j + 1) + '" loading="lazy"></button>').join('');
+        '<button type="button" data-zoom="' + esc(p.src) + '" style="--bg:url(\'' + esc(p.src) + '\')" aria-label="Ampliar foto ' + (j + 1) + ' de ' + esc(s.name) + '">' +
+        '<img src="' + esc(p.src) + '" alt="' + esc(s.name) + ' foto ' + (j + 1) + '" loading="lazy"></button>').join('');
       const dots = s.photos.length > 1 ? '<div class="dots">' + s.photos.map((_, j) => '<i' + (j === 0 ? ' class="on"' : '') + '></i>').join('') + '</div>' : '';
       const prices = Object.keys(OPT).filter((o) => typeof s.prices[o] === 'number').map((o) =>
         '<div class="price"><small>' + OPT[o] + '</small><b>' + brlShort(s.prices[o]) + '</b></div>').join('');

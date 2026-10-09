@@ -39,7 +39,7 @@
       "name": "Volume Fox Eyes",
       "description": "Famoso olhar de raposa: alonga e dá um toque ousado.",
       "prices": { "aplicacao": 100, "manutencao": 80 },
-      "photos": [{ "src": "img/fox-eyes-3.jpg", "focus": "42% 40%" }, "img/fox-eyes-1.jpg", { "src": "img/fox-eyes-2.jpg", "focus": "52% 50%" }]
+      "photos": ["img/fox-eyes-3.jpg"]
     },
     {
       "id": "design-henna",

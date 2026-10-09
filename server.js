@@ -45,8 +45,8 @@ function catalog() {
 }
 catalog();
 const OPTION_LABEL = { aplicacao: 'Aplicação', manutencao: 'Manutenção' };
-// forma de pagamento (só Pix ou cartão por aproximação)
-const PAYMENT_LABEL = { pix: 'Pix', cartao: 'Cartão (aproximação)' };
+// forma de pagamento (Pix, cartão por aproximação ou dinheiro)
+const PAYMENT_LABEL = { pix: 'Pix', cartao: 'Cartão (aproximação)', dinheiro: 'Dinheiro' };
 const brl = (n) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
 // Monta a descrição e o valor do pedido a partir do catálogo (ou lança erro 400)
@@ -225,7 +225,7 @@ app.post('/api/bookings', async (req, res) => {
   }
   const { model, total } = order;
   const payment = String(req.body.payment || '');
-  if (!(payment in PAYMENT_LABEL)) return res.status(400).json({ error: 'Escolha a forma de pagamento (Pix ou cartão).' });
+  if (!(payment in PAYMENT_LABEL)) return res.status(400).json({ error: 'Escolha a forma de pagamento (Pix, cartão ou dinheiro).' });
 
   if (name.length < 2 || name.length > 80) return res.status(400).json({ error: 'Informe seu nome.' });
   if (phone.length < 12 || phone.length > 13) return res.status(400).json({ error: 'Informe um WhatsApp válido com DDD.' });

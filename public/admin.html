@@ -504,7 +504,8 @@
     return '<span class="lbl">' + name + '<small>' + dm(mon) + ' a ' + dm(addDays(mon, 6)) + '</small></span>';
   };
 
-  const PAY = { pix: 'Pix', cartao: 'Cartão (aproximação)' };
+  const PAY = { pix: 'Pix', cartao: 'Cartão (aproximação)', dinheiro: 'Dinheiro' };
+  const PAY_ICON = { pix: '💠', cartao: '💳', dinheiro: '💵' };
 
   // ---------- mensagens prontas para a cliente ----------
   function waText(b, kind) {
@@ -604,7 +605,7 @@
         '<div class="svc">' + esc(b.model || '—') + '</div>' +
         '<div class="meta"><a href="https://wa.me/' + esc(b.phone) + '" target="_blank" rel="noopener">' + esc(fmtPhone(b.phone)) + '</a>' +
         (typeof b.total === 'number' ? '<span>' + brl(b.total) + '</span>' : '') +
-        (PAY[b.payment] ? '<span class="pay">' + (b.payment === 'pix' ? '💠 ' : '💳 ') + esc(PAY[b.payment]) + '</span>' : '') + '</div>' +
+        (PAY[b.payment] ? '<span class="pay">' + ((PAY_ICON[b.payment] || '') + ' ') + esc(PAY[b.payment]) + '</span>' : '') + '</div>' +
         (st === 'pending' && !b.canConfirm ? '<div class="warn">Não dá para confirmar: horário lotado, removido ou já passou.</div>' : '') +
       '</div>' +
       '<div class="acts">' + acts + '</div></div>';

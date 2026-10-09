@@ -719,7 +719,7 @@
   const vagas = (n) => n === 1 ? '1 vaga' : n + ' vagas';
 
   let CFG = { services: [], extras: [], business: {} };
-  const PAY = { pix: { label: 'Pix', note: '' }, cartao: { label: 'Cartão', note: 'por aproximação' } };
+  const PAY = { pix: { label: 'Pix', note: '' }, cartao: { label: 'Cartão', note: 'aproximação' }, dinheiro: { label: 'Dinheiro', note: '' } };
   const state = { serviceId: '', option: 'aplicacao', payment: '', extras: new Set(), week: null, data: null, date: null, time: null };
   const svc = () => CFG.services.find((s) => s.id === state.serviceId);
   const total = () => {
@@ -1102,7 +1102,7 @@
     const s = svc();
     if (!s) { $('msg').textContent = 'Escolha o serviço.'; return; }
     if (!state.date || !state.time) { $('msg').textContent = 'Escolha o dia e o horário.'; return; }
-    if (!state.payment) { $('msg').textContent = 'Escolha a forma de pagamento (Pix ou cartão).'; $('payBox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); return; }
+    if (!state.payment) { $('msg').textContent = 'Escolha a forma de pagamento (Pix, cartão ou dinheiro).'; $('payBox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); return; }
     if ($('name').value.trim().length < 2) { $('msg').textContent = 'Informe seu nome.'; $('name').focus(); return; }
     if (phoneDigits().length < 10) { $('msg').textContent = 'Informe um WhatsApp válido com DDD.'; $('phone').focus(); return; }
     const ex = CFG.extras.filter((e) => state.extras.has(e.id));

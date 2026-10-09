@@ -17,6 +17,11 @@ if (url && token) {
   redis = new Redis({ url, token });
 }
 const mode = redis ? 'redis' : 'file';
+// No Render o disco é apagado a cada restart: sem Redis os dados sumiriam em silêncio. Melhor não subir.
+if (!redis && (process.env.RENDER || process.env.REQUIRE_REDIS)) {
+  console.error('ERRO: sem UPSTASH_REDIS_REST_URL/UPSTASH_REDIS_REST_TOKEN neste ambiente os dados seriam perdidos a cada restart. Defina as variáveis no Render.');
+  process.exit(1);
+}
 
 // ---------- leitura e escrita ----------
 async function getJSON(name, fallback) {

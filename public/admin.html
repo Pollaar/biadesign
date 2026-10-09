@@ -389,6 +389,13 @@
           <div class="panel list" id="homePending"></div>
         </div>
       </div>
+      <div class="sect-title"><h2>Backup da agenda</h2></div>
+      <div class="panel" style="padding:14px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        <small style="flex:1 1 220px">Baixe uma cópia de segurança de vez em quando e guarde no seu celular ou e-mail.</small>
+        <button class="btn btn-line btn-sm" id="bkDown" type="button">Baixar backup</button>
+        <button class="btn btn-line btn-sm" id="bkUp" type="button">Restaurar backup</button>
+        <input type="file" id="bkFile" accept="application/json,.json" hidden>
+      </div>
     </section>
 
     <!-- Pedidos -->
@@ -1081,6 +1088,34 @@
     } catch (err) { fail(err); }
     finally { btn.disabled = false; }
   }
+
+  // ---------- backup ----------
+  async function downloadBackup() {
+    try {
+      const data = await api('/api/admin/backup');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+      a.download = 'backup-agenda-' + data.exportedAt.slice(0, 10) + '.json';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      toast('Backup baixado.');
+    } catch (err) { fail(err); }
+  }
+  async function restoreBackup(file) {
+    if (!file) return;
+    try {
+      const data = JSON.parse(await file.text());
+      const n = data && data.bookings && data.bookings.bookings ? data.bookings.bookings.length : 0;
+      if (!confirm('Restaurar este backup (' + n + ' agendamento(s))? A agenda atual será substituída.')) return;
+      await api('/api/admin/restore', { method: 'POST', body: JSON.stringify(data) });
+      toast('Backup restaurado. Recarregando…');
+      setTimeout(() => location.reload(), 1200);
+    } catch (err) { if (err instanceof SyntaxError) toast('Arquivo inválido.', 'err'); else fail(err); }
+    finally { $('bkFile').value = ''; }
+  }
+  $('bkDown').addEventListener('click', downloadBackup);
+  $('bkUp').addEventListener('click', () => $('bkFile').click());
+  $('bkFile').addEventListener('change', (e) => restoreBackup(e.target.files[0]));
 
   document.addEventListener('click', (e) => {
     const nb = e.target.closest('[data-notif]');

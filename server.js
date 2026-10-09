@@ -123,7 +123,34 @@ async function readDb() {
   db.weeks = db.weeks || {};
   return db;
 }
-const writeDb = (db) => store.setJSON('bookings', db);
+// Cópias de segurança: a cada gravação guarda um instantâneo (no máx. 1 por hora, últimos 48) além do dado principal.
+// Se a agenda aparecer vazia na subida do servidor, o último instantâneo é restaurado sozinho.
+const SNAPSHOT_EVERY_MS = 60 * 60 * 1000;
+const MAX_SNAPSHOTS = 48;
+let lastSnapshotAt = 0;
+async function writeDb(db) {
+  await store.setJSON('bookings', db);
+  const now = Date.now();
+  if (now - lastSnapshotAt < SNAPSHOT_EVERY_MS) return;
+  lastSnapshotAt = now;
+  try {
+    const snaps = await store.getJSON('bookings-snapshots', []);
+    snaps.push({ at: new Date(now).toISOString(), data: db });
+    await store.setJSON('bookings-snapshots', snaps.slice(-MAX_SNAPSHOTS));
+  } catch (e) {
+    console.error('Falha ao gravar o instantâneo de segurança:', e.message);
+  }
+}
+async function restoreIfEmpty() {
+  const db = await store.getJSON('bookings', null);
+  const empty = !db || (!(db.bookings || []).length && !Object.keys(db.weeks || {}).length);
+  if (!empty) return;
+  const snaps = await store.getJSON('bookings-snapshots', []);
+  const last = [...snaps].reverse().find((s) => s.data && ((s.data.bookings || []).length || Object.keys(s.data.weeks || {}).length));
+  if (!last) return;
+  await store.setJSON('bookings', last.data);
+  console.warn('Agenda estava vazia: restaurada a partir do instantâneo de ' + last.at);
+}
 const statusOf = (b) => b.status || 'confirmed';
 const isConfirmed = (b) => statusOf(b) === 'confirmed';
 const isActive = (b) => statusOf(b) === 'pending' || statusOf(b) === 'confirmed';
@@ -163,7 +190,8 @@ function weekHasAvailability(db, monday) {
 // ---------- App ----------
 const app = express();
 app.set('trust proxy', 1);
-app.use(express.json({ limit: '20kb' }));
+const smallJson = express.json({ limit: '20kb' });
+app.use((req, res, next) => (req.path === '/api/admin/restore' ? next() : smallJson(req, res, next)));
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -576,6 +604,22 @@ app.post('/api/admin/push/test', requireAdmin, route(async (req, res) => {
   res.json({ ok: true, ...r });
 }, 'Erro ao enviar o teste.'));
 
+// Backup para guardar fora do servidor: baixa tudo em um arquivo JSON (e restaura a partir dele)
+app.get('/api/admin/backup', requireAdmin, route(async (req, res) => {
+  const data = { exportedAt: new Date().toISOString(), bookings: await store.getJSON('bookings', {}), removedBookings: await store.getJSON('removed-bookings', []) };
+  res.set('Content-Disposition', `attachment; filename="backup-agenda-${data.exportedAt.slice(0, 10)}.json"`).json(data);
+}, 'Erro ao gerar o backup.'));
+app.post('/api/admin/restore', requireAdmin, express.json({ limit: '5mb' }), route(async (req, res) => {
+  const b = req.body && req.body.bookings;
+  if (!b || !Array.isArray(b.bookings) || typeof b.weeks !== 'object') return res.status(400).json({ error: 'Arquivo de backup inválido.' });
+  await withLock(async () => {
+    await store.setJSON('bookings-snapshots', [...(await store.getJSON('bookings-snapshots', [])), { at: new Date().toISOString(), data: await store.getJSON('bookings', {}) }].slice(-MAX_SNAPSHOTS));
+    await store.setJSON('bookings', b);
+    if (Array.isArray(req.body.removedBookings)) await store.setJSON('removed-bookings', req.body.removedBookings);
+  });
+  res.json({ ok: true, bookings: b.bookings.length });
+}, 'Erro ao restaurar o backup.'));
+
 // Para o cron-job.org manter o servidor acordado no Render grátis (não toca no banco)
 app.get('/healthz', (req, res) => res.type('text').send('ok'));
 
@@ -585,6 +629,11 @@ app.get('/healthz', (req, res) => res.type('text').send('ok'));
   } catch (e) {
     console.error('Não foi possível conectar ao armazenamento (' + store.mode + '). Confira UPSTASH_REDIS_REST_URL e UPSTASH_REDIS_REST_TOKEN:', e.message);
     process.exit(1);
+  }
+  try {
+    await restoreIfEmpty();
+  } catch (e) {
+    console.error('Não foi possível checar o instantâneo de segurança:', e.message);
   }
   try {
     await push.init();

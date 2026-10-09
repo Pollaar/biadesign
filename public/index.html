@@ -785,7 +785,7 @@
     $('grid').innerHTML = CFG.services.map((s, i) => {
       const slides = s.photos.map((p, j) =>
         '<button type="button" data-zoom="' + esc(p.src) + '" aria-label="Ampliar foto ' + (j + 1) + ' de ' + esc(s.name) + '">' +
-        '<img src="' + esc(p.src) + '" style="object-position:' + esc(p.focus) + '" alt="' + esc(s.name) + ' foto ' + (j + 1) + '" loading="lazy"></button>').join('');
+        '<img src="' + esc(p.src) + '" style="object-position:' + esc(p.focus) + (p.zoom ? ';transform:scale(' + Number(p.zoom) + ');transform-origin:' + esc(p.origin || '50% 50%') : '') + '" alt="' + esc(s.name) + ' foto ' + (j + 1) + '" loading="lazy"></button>').join('');
       const dots = s.photos.length > 1 ? '<div class="dots">' + s.photos.map((_, j) => '<i' + (j === 0 ? ' class="on"' : '') + '></i>').join('') + '</div>' : '';
       // setas para trocar de foto com o mouse (no celular continua arrastando)
       const arrows = s.photos.length > 1

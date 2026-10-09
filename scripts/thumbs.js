@@ -26,9 +26,21 @@ const thumbPath = (src) => src.replace(/^img\//, 'img/thumbs/').replace(/\.(jpe?
     let ch = Math.round((width * OUT_H) / OUT_W);
     if (ch > height) { ch = height; cw = Math.round((height * OUT_W) / OUT_H); }
     const left = Math.round((width - cw) * (isNaN(fx) ? 0.5 : fx));
-    const top = Math.round((height - ch) * (isNaN(fy) ? 0.5 : fy));
+    let top = Math.round((height - ch) * (isNaN(fy) ? 0.5 : fy));
+    // "zoom" + "origin" do catálogo (aproxima a foto, ex. 1.45 e "0% 64%"): mesmo recorte que o site faz no card
+    let cwz = cw;
+    let chz = ch;
+    let left2 = left;
+    const z = Number(p.zoom) || 1;
+    if (z > 1) {
+      const [ox, oy] = String(p.origin || '50% 50%').split(/\s+/).map((v) => parseFloat(v) / 100);
+      left2 = left + Math.round((ox - ox / z) * cw);
+      top = top + Math.round((oy - oy / z) * ch);
+      cwz = Math.round(cw / z);
+      chz = Math.round(ch / z);
+    }
     const info = await sharp(input)
-      .extract({ left, top, width: cw, height: ch })
+      .extract({ left: left2, top, width: cwz, height: chz })
       .resize(OUT_W, OUT_H)
       .webp({ quality: 72 })
       .toFile(output);

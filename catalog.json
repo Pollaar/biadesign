@@ -23,7 +23,7 @@
       "name": "Volume Egípcio",
       "description": "Volumão bem preenchido e pretinho.",
       "prices": { "aplicacao": 95, "manutencao": 80 },
-      "photos": [{ "src": "img/volume-egipcio-4.jpg", "focus": "50% 75%" }]
+      "photos": [{ "src": "img/volume-egipcio-5.jpg", "focus": "50% 90%", "zoom": 1.45, "origin": "0% 64%" }, { "src": "img/volume-egipcio-6.jpg", "focus": "50% 57%" }]
     },
     {
       "id": "volume-brasileiro-marrom",
@@ -39,7 +39,7 @@
       "name": "Volume Fox Eyes",
       "description": "Famoso olhar de raposa: alonga e dá um toque ousado.",
       "prices": { "aplicacao": 100, "manutencao": 80 },
-      "photos": [{ "src": "img/fox-eyes-4.jpg", "focus": "50% 67%" }]
+      "photos": [{ "src": "img/fox-eyes-1.jpg", "focus": "50% 73%" }, { "src": "img/fox-eyes-4.jpg", "focus": "50% 67%" }]
     },
     {
       "id": "design-henna",

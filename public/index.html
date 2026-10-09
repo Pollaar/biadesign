@@ -109,14 +109,17 @@
   .glow i:nth-child(3) { width: 34vw; height: 34vw; max-width: 420px; max-height: 420px; right: -6%; top: 6%; background: radial-gradient(circle, #f8c6d9 0%, rgba(248, 198, 217, 0) 70%); animation-duration: 26s; }
   @keyframes drift { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(3%, 6%, 0) scale(1.08); } }
 
-  .logo { margin: 0; display: flex; align-items: center; justify-content: center; gap: clamp(8px, 2vw, 18px); font-family: var(--serif); font-weight: 500; color: var(--ink); line-height: 1; }
-  .logo .w { font-size: clamp(1.6rem, 6vw, 3.4rem); letter-spacing: .06em; }
-  .logo .B {
-    font-size: clamp(5.5rem, 22vw, 12rem); font-weight: 700; line-height: .82;
-    background: linear-gradient(160deg, var(--pink-400) 0%, var(--pink-600) 55%, var(--pink-700) 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .role { font-family: var(--serif); letter-spacing: .42em; text-transform: uppercase; font-size: clamp(.8rem, 2.4vw, 1.05rem); color: var(--pink-600); margin: 18px 0 0; padding-left: .42em; }
+  /* três colunas: o B fica sempre no centro exato da página (BEATRIZ encosta nele pela esquerda e LIMA pela direita) */
+  .logo { margin: 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; column-gap: clamp(8px, 2vw, 18px); font-family: var(--serif); font-weight: 500; color: var(--ink); line-height: 1; }
+  .logo .w { position: relative; z-index: 1; font-size: clamp(1.6rem, 6vw, 3.4rem); letter-spacing: .06em; }
+  .logo #nameA { justify-self: end; margin-right: -.06em; }
+  .logo #nameB { justify-self: start; }
+  /* letra grande com a agulha e a linha em volta */
+  .logo .B { display: block; width: clamp(165px, 40vw, 460px); height: auto; margin-inline: clamp(-90px, -9vw, -34px); overflow: visible; }
+  .logo .B text { font-family: var(--serif); font-weight: 700; }
+  .logo .B .thread { fill: none; stroke: url(#bGrad); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .logo .B .thread.over { stroke: #fff; stroke-width: 2.4; }
+  .role { font-family: var(--serif); font-weight: 600; letter-spacing: .16em; text-transform: uppercase; font-size: clamp(1.05rem, 3.8vw, 2rem); line-height: 1.1; color: var(--pink-600); margin: 6px 0 0; padding-left: .16em; }
   .hero .sub { max-width: 560px; margin-inline: auto; margin-top: 26px; }
   .hero .cta { margin-top: 30px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
   .spark { position: absolute; color: var(--pink-200); pointer-events: none; animation: twinkle 4s ease-in-out infinite; }
@@ -222,10 +225,20 @@
   .media { position: relative; aspect-ratio: 4 / 5; background: var(--pink-50); overflow: hidden; }
   .slides { position: absolute; inset: 0; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .slides::-webkit-scrollbar { display: none; }
-  /* foto inteira e centralizada, sobre um fundo desfocado da própria foto */
-  .slides button { position: relative; flex: 0 0 100%; height: 100%; scroll-snap-align: center; border: 0; padding: 0; cursor: zoom-in; background: var(--pink-50); overflow: hidden; }
-  .slides button::before { content: ""; position: absolute; inset: -20px; background: var(--bg) center / cover; filter: blur(22px); }
-  .slides img { position: relative; width: 100%; height: 100%; object-fit: contain; object-position: 50% 50%; }
+  /* a foto ocupa o quadro todo; o "focus" do catálogo mantém o assunto centralizado no corte */
+  .slides button { flex: 0 0 100%; height: 100%; scroll-snap-align: center; border: 0; padding: 0; cursor: zoom-in; background: var(--pink-50); overflow: hidden; }
+  .slides img { width: 100%; height: 100%; object-fit: cover; }
+  .arrow {
+    position: absolute; top: 50%; z-index: 2; width: 38px; height: 38px; margin-top: -19px; padding: 0 0 3px; border: 0; border-radius: 50%;
+    display: grid; place-items: center; font-size: 1.5rem; line-height: 1; cursor: pointer; color: var(--ink);
+    background: rgba(255, 255, 255, .88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+    transition: transform .3s var(--ease), background .2s;
+  }
+  .arrow:hover { background: #fff; transform: scale(1.08); }
+  .arrow[hidden] { display: none; }
+  .arrow.prev { left: 10px; }
+  .arrow.next { right: 10px; }
+  @media (hover: none) { .arrow { display: none; } }
   .dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px; pointer-events: none; }
   .dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .6); transition: width .4s var(--ease), background .3s; }
   .dots i.on { width: 18px; background: #fff; }
@@ -434,7 +447,19 @@
 
   <div class="container">
     <h1 class="logo reveal" aria-label="Beatriz Lima">
-      <span class="w" id="nameA">BEATRIZ</span><span class="B" aria-hidden="true">B</span><span class="w" id="nameB">LIMA</span>
+      <span class="w" id="nameA">BEATRIZ</span><svg class="B" viewBox="262 125 476 245" aria-hidden="true">
+        <defs>
+          <linearGradient id="bGrad" gradientUnits="userSpaceOnUse" x1="400" y1="130" x2="560" y2="365">
+            <stop offset="0" stop-color="#ea7fa6"/><stop offset=".55" stop-color="#c83f72"/><stop offset="1" stop-color="#a52f5c"/>
+          </linearGradient>
+        </defs>
+        <text id="bLetter" x="500" y="365" text-anchor="middle" font-size="262" fill="url(#bGrad)" stroke="url(#bGrad)" stroke-width="3" stroke-linejoin="round">B</text>
+        <!-- "L" cursivo em volta do B: uma linha só. Vem da direita pela base, faz a laçada à esquerda, sobe como agulha cruzando o B, dá a volta no fundo da agulha e volta pela esquerda -->
+        <clipPath id="bClip"><text x="500" y="365" text-anchor="middle" font-size="262" font-family="Bodoni Moda" font-weight="700">B</text></clipPath>
+        <path id="lThread" class="thread" d="M738 334C660 344 580 328 500 326C430 324 380 314 330 316C290 318 268 334 284 350C300 364 350 352 400 330C430 314 450 308 470 290L612 140C624 126 640 130 632 148C626 160 600 186 574 212C548 236 500 252 440 254C400 255 350 256 300 252"/>
+        <!-- por cima do B a linha fica clara, como um fio passando pela letra -->
+        <use href="#lThread" class="thread over" clip-path="url(#bClip)"/>
+      </svg><span class="w" id="nameB">LIMA</span>
     </h1>
     <p class="role reveal" style="--d:.12s" id="role">Lash Designer</p>
     <p class="sub reveal" style="--d:.24s" id="tagline">Realçando a beleza natural do seu olhar.</p>
@@ -719,7 +744,7 @@
     // miniaturas leves já recortadas (npm run thumbs); se faltar alguma, cai na foto original
     const html = tiles.map(({ s, p }) =>
       '<a class="tile" href="#catalogo" data-goto="' + esc(s.id) + '"><div class="ph"><img src="' + esc(thumb(p.src)) + '" data-full="' + esc(p.src) +
-      '" alt="' + esc(s.name) + '" width="480" height="640" decoding="async" draggable="false"></div>' +
+      '" style="object-position:' + esc(p.focus) + '" alt="' + esc(s.name) + '" width="480" height="640" decoding="async" draggable="false"></div>' +
       '<span>' + esc(s.name) + '<small>' + esc(s.category) + '</small></span></a>').join('');
     // duas cópias para o loop infinito (mesmas URLs: o navegador baixa uma vez só; a cópia fica escondida dos leitores de tela)
     $('track').innerHTML = html + '<div style="display:contents" aria-hidden="true">' + html.replace(/<a /g, '<a tabindex="-1" ') + '</div>';
@@ -750,13 +775,17 @@
 
     $('grid').innerHTML = CFG.services.map((s, i) => {
       const slides = s.photos.map((p, j) =>
-        '<button type="button" data-zoom="' + esc(p.src) + '" style="--bg:url(\'' + esc(p.src) + '\')" aria-label="Ampliar foto ' + (j + 1) + ' de ' + esc(s.name) + '">' +
-        '<img src="' + esc(p.src) + '" alt="' + esc(s.name) + ' foto ' + (j + 1) + '" loading="lazy"></button>').join('');
+        '<button type="button" data-zoom="' + esc(p.src) + '" aria-label="Ampliar foto ' + (j + 1) + ' de ' + esc(s.name) + '">' +
+        '<img src="' + esc(p.src) + '" style="object-position:' + esc(p.focus) + '" alt="' + esc(s.name) + ' foto ' + (j + 1) + '" loading="lazy"></button>').join('');
       const dots = s.photos.length > 1 ? '<div class="dots">' + s.photos.map((_, j) => '<i' + (j === 0 ? ' class="on"' : '') + '></i>').join('') + '</div>' : '';
+      // setas para trocar de foto com o mouse (no celular continua arrastando)
+      const arrows = s.photos.length > 1
+        ? '<button class="arrow prev" type="button" data-dir="-1" aria-label="Foto anterior" hidden>‹</button>' +
+          '<button class="arrow next" type="button" data-dir="1" aria-label="Próxima foto">›</button>' : '';
       const prices = Object.keys(OPT).filter((o) => typeof s.prices[o] === 'number').map((o) =>
         '<div class="price"><small>' + OPT[o] + '</small><b>' + brlShort(s.prices[o]) + '</b></div>').join('');
       return '<div class="cell reveal" style="--d:' + ((i % 3) * 0.08) + 's" data-cat="' + esc(s.category) + '" data-id="' + esc(s.id) + '"><article class="card">' +
-        '<div class="media"><div class="slides">' + slides + '</div>' + dots + '<span class="tag">' + esc(s.category) + '</span></div>' +
+        '<div class="media"><div class="slides">' + slides + '</div>' + arrows + dots + '<span class="tag">' + esc(s.category) + '</span></div>' +
         '<div class="body"><h3>' + esc(s.name) + '</h3><p class="desc">' + esc(s.description) + '</p>' +
         '<div class="prices">' + prices + '</div>' +
         '<button class="btn btn-soft" type="button" data-book="' + esc(s.id) + '">Agendar este</button></div></article></div>';
@@ -766,9 +795,13 @@
     $('grid').querySelectorAll('.slides').forEach((el) => {
       const dots = el.parentElement.querySelectorAll('.dots i');
       if (!dots.length) return;
+      const prev = el.parentElement.querySelector('.arrow.prev');
+      const next = el.parentElement.querySelector('.arrow.next');
       el.addEventListener('scroll', () => {
         const idx = Math.round(el.scrollLeft / el.clientWidth);
         dots.forEach((d, i) => d.classList.toggle('on', i === idx));
+        prev.hidden = idx === 0;
+        next.hidden = idx === dots.length - 1;
       }, { passive: true });
     });
 
@@ -803,6 +836,12 @@
   });
 
   $('grid').addEventListener('click', (e) => {
+    const a = e.target.closest('[data-dir]');
+    if (a) {
+      const slides = a.parentElement.querySelector('.slides');
+      slides.scrollTo({ left: slides.scrollLeft + Number(a.dataset.dir) * slides.clientWidth, behavior: reduce ? 'auto' : 'smooth' });
+      return;
+    }
     const z = e.target.closest('[data-zoom]');
     if (z) {
       $('lbImg').src = z.dataset.zoom;

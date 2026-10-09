@@ -19,11 +19,17 @@ const thumbPath = (src) => src.replace(/^img\//, 'img/thumbs/').replace(/\.(jpe?
   for (const p of photos) {
     const input = path.join(PUBLIC, p.src);
     const output = path.join(PUBLIC, thumbPath(p.src));
-    // foto inteira e centralizada (sem corte), sobre um fundo desfocado da própria foto
-    const bg = await sharp(input).resize(OUT_W, OUT_H, { fit: 'cover' }).blur(24).modulate({ brightness: 1.05 }).toBuffer();
-    const fg = await sharp(input).resize(OUT_W, OUT_H, { fit: 'inside' }).toBuffer();
-    const info = await sharp(bg)
-      .composite([{ input: fg, gravity: 'center' }])
+    const { width, height } = await sharp(input).metadata();
+    // recorte 3:4 pelo "focus" do catálogo (ex. "70% 50%"), igual ao object-position do site
+    const [fx, fy] = String(p.focus || '50% 50%').split(/\s+/).map((v) => parseFloat(v) / 100);
+    let cw = width;
+    let ch = Math.round((width * OUT_H) / OUT_W);
+    if (ch > height) { ch = height; cw = Math.round((height * OUT_W) / OUT_H); }
+    const left = Math.round((width - cw) * (isNaN(fx) ? 0.5 : fx));
+    const top = Math.round((height - ch) * (isNaN(fy) ? 0.5 : fy));
+    const info = await sharp(input)
+      .extract({ left, top, width: cw, height: ch })
+      .resize(OUT_W, OUT_H)
       .webp({ quality: 72 })
       .toFile(output);
     console.log(thumbPath(p.src), Math.round(info.size / 1024) + 'KB');

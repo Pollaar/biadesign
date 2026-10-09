@@ -116,6 +116,15 @@
   .logo #nameB { justify-self: start; }
   /* letra grande com a agulha e a linha em volta */
   .logo .B { display: block; width: clamp(165px, 40vw, 460px); height: auto; margin-inline: clamp(-90px, -9vw, -34px); overflow: visible; }
+  /* celular: o B grande (com a linha) em cima, e "BEATRIZ  LIMA" logo abaixo, centralizados */
+  @media (max-width: 600px) {
+    .logo { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 14px; row-gap: 10px; }
+    /* mais largo que o conteúdo, mas centrado nele; ocupa a primeira linha e o nome quebra para a segunda */
+    .logo .B { order: -1; flex: 0 0 auto; width: min(94vw, 420px); margin-inline: calc((100% - min(94vw, 420px)) / 2); }
+    .logo #nameA, .logo #nameB { font-size: clamp(1.5rem, 7.4vw, 2.3rem); }
+    .hero { padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 28px); }
+    .spark { display: none; }
+  }
   .logo .B text { font-family: var(--serif); font-weight: 700; }
   .logo .B .thread { fill: none; stroke: url(#bGrad); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
   .logo .B .thread.over { stroke: #fff; stroke-width: 2.4; }
